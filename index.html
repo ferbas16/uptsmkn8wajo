@@ -1,0 +1,3430 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UPT SMKN 8 WAJO — Portal Sekolah & SPMB Online</title>
+
+  <!-- PWA Manifest via Data URI (Single-File PWA) -->
+  <link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22UPT%20SMKN%208%20WAJO%20Portal%22%2C%22short_name%22%3A%22UPT%20SMKN%208%20WAJO%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230F2942%22%2C%22theme_color%22%3A%22%230F2942%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20width%3D%27100%27%20height%3D%27100%27%20rx%3D%2720%27%20fill%3D%27%230F2942%27%2F%3E%3Ctext%20x%3D%2750%27%20y%3D%2765%27%20font-size%3D%2748%27%20font-family%3D%27sans-serif%27%20font-weight%3D%27bold%27%20fill%3D%27%23F59E0B%27%20text-anchor%3D%27middle%27%3E8W%3C%2Ftext%3E%3C%2Fsvg%3E%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D' />
+  <meta name="theme-color" content="#0F2942" />
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            navy: {
+              900: '#0B1F33',
+              800: '#0F2942',
+              700: '#163A5F',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ==========================================================================
+       PREMIUM BUTTON ANIMATIONS (Shimmer Sweep, Spring Lift, Tactile Press)
+       ========================================================================== */
+    .btn-anim {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.25s ease;
+      will-change: transform, box-shadow;
+    }
+
+    /* Kilau Cahaya Diagonal (Shimmer Sweep) saat hover */
+    .btn-anim::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -75%;
+      width: 50%;
+      height: 200%;
+      background: linear-gradient(
+        115deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.42) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: skewX(-25deg);
+      pointer-events: none;
+    }
+
+    .btn-anim:hover::after {
+      animation: shimmerSweep 0.75s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes shimmerSweep {
+      0% { left: -75%; }
+      100% { left: 135%; }
+    }
+
+    /* Efek Pegas Terangkat (Spring Lift) & Shadow Glow */
+    .btn-anim:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-glow-blue:hover {
+      box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.48);
+    }
+
+    .btn-glow-amber:hover {
+      box-shadow: 0 12px 24px -6px rgba(245, 158, 11, 0.52);
+    }
+
+    .btn-glow-white:hover {
+      box-shadow: 0 12px 24px -6px rgba(15, 41, 66, 0.25);
+    }
+
+    /* Efek Tekan Taktil (Tactile Press) */
+    .btn-anim:active {
+      transform: scale(0.95) translateY(0px);
+    }
+
+    /* Animasi Button Khusus Menu Navigasi Header (High-Contrast Light Pill) */
+    .nav-btn-anim {
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background-color 0.25s ease,
+                  color 0.25s ease,
+                  border-color 0.25s ease,
+                  box-shadow 0.32s ease;
+    }
+    .nav-btn-anim::before {
+      content: "";
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      width: 0;
+      height: 2.5px;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #2563EB, #06B6D4);
+      transform: translateX(-50%);
+      transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .nav-btn-anim::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -80%;
+      width: 45%;
+      height: 200%;
+      background: linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.85) 50%, transparent 100%);
+      transform: skewX(-25deg);
+      pointer-events: none;
+    }
+    .nav-btn-anim:hover {
+      transform: translateY(-2px);
+      background-color: #EFF6FF;
+      border-color: #93C5FD;
+      color: #1D4ED8;
+      box-shadow: 0 8px 18px -6px rgba(37, 99, 235, 0.28);
+    }
+    .nav-btn-anim:hover::before {
+      width: 60%;
+    }
+    .nav-btn-anim:hover::after {
+      animation: shimmerSweep 0.7s ease forwards;
+    }
+    .nav-btn-anim:active {
+      transform: scale(0.95);
+    }
+
+    /* Efek Teks Gradien Berkilau ("Vokasi Unggul" & "UPT SMKN 8 WAJO") */
+    .text-shimmer-vokasi {
+      background: linear-gradient(
+        110deg,
+        #FCD34D 0%,
+        #FFFFFF 25%,
+        #67E8F9 50%,
+        #FBBF24 75%,
+        #FFFFFF 100%
+      );
+      background-size: 240% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientTextFlow 4.5s linear infinite;
+      filter: drop-shadow(0 4px 18px rgba(103, 232, 249, 0.32));
+    }
+
+    @keyframes gradientTextFlow {
+      0% { background-position: 0% center; }
+      100% { background-position: 240% center; }
+    }
+
+    /* Efek Teks Gradien Elegan untuk Header Brand "UPT SMKN 8 WAJO" */
+    .header-brand-shimmer {
+      background: linear-gradient(
+        110deg,
+        #0F2942 0%,
+        #1D4ED8 28%,
+        #0284C7 52%,
+        #D97706 76%,
+        #0F2942 100%
+      );
+      background-size: 230% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientTextFlow 5s linear infinite;
+    }
+
+    .brand-pill-hover {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease,
+                  border-color 0.3s ease;
+    }
+    .brand-pill-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px -8px rgba(2, 132, 199, 0.32);
+    }
+
+    /* Animasi Kartu Interaktif */
+    .card-spring {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .card-spring:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 32px -12px rgba(15, 41, 66, 0.15);
+    }
+
+    /* Animasi Ilustrasi Melayang Halus */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .animate-float {
+      animation: floatSlow 4.5s ease-in-out infinite;
+    }
+
+    /* Custom Scrollbar untuk Container Utama */
+    #app-shell::-webkit-scrollbar {
+      width: 8px;
+    }
+    #app-shell::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    #app-shell::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    #app-shell::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+
+    /* Mode Print Bukti SPMB */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-card, #printable-card * {
+        visibility: visible;
+      }
+      #printable-card {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-800 antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- ==========================================================================
+       FULL-PAGE BLOGGER OVERRIDE CONTAINER (Menutupi seluruh tema Blogger)
+       ========================================================================== -->
+  <div id="app-shell" class="fixed inset-0 z-[999999] overflow-y-auto bg-white font-sans">
+
+    <!-- FLOATING BADGE MODE PREVIEW (Otomatis hilang jika IS_PREVIEW = false) -->
+    <div id="preview-badge" class="hidden fixed bottom-20 md:bottom-5 right-4 z-[1000010] items-center gap-2 rounded-full bg-amber-500/95 backdrop-blur-md px-4 py-2 text-xs font-bold text-slate-950 shadow-xl border border-amber-300">
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-900 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-slate-900"></span>
+      </span>
+      <span>Mode Preview Aktif</span>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toast-container" class="fixed top-5 right-5 z-[1000050] flex flex-col gap-2.5 pointer-events-none max-w-sm w-full px-4 sm:px-0"></div>
+
+    <!-- ========================================================================
+         VIEW 1: LANDING PAGE PUBLIK SMKN 8 WAJO
+         ======================================================================== -->
+    <div id="public-view" class="min-h-screen flex flex-col">
+
+      <!-- NAVBAR STICKY KONTRAS CERAH (Putih-Biru-Emas) DENGAN LOGO RESMI & MENU BERANIMASI -->
+      <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-xl border-b-2 border-sky-200/80 shadow-md shadow-slate-900/5 text-slate-900">
+        <!-- Top Accent Bar Gradasi Biru-Cyan-Emas -->
+        <div class="h-1 w-full bg-gradient-to-r from-[#0F2942] via-[#0284C7] to-[#F59E0B]"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between gap-3">
+          <!-- Brand Logo Resmi SMKN 8 Wajo -->
+          <a href="#beranda" class="brand-pill-hover flex items-center gap-3 group shrink-0 rounded-2xl px-2 py-1 border border-transparent hover:border-sky-200/90 hover:bg-sky-50/50">
+            <div class="w-11 h-11 md:w-12 md:h-12 rounded-full bg-white p-0.5 shadow-md shadow-sky-900/15 ring-2 ring-[#0284C7] group-hover:scale-105 group-hover:ring-amber-400 transition-all duration-300 flex items-center justify-center overflow-hidden">
+              <!-- SVG Presisi Tinggi Logo Resmi SMKN 8 Wajo -->
+              <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <path id="topArcNav" d="M 38,94 A 62,62 0 0,1 162,94" />
+                  <path id="botArcNav" d="M 52,148 A 62,62 0 0,0 148,148" />
+                </defs>
+                <!-- Lingkaran Putih Dasar -->
+                <circle cx="100" cy="100" r="98" fill="#FFFFFF"/>
+                <!-- Perisai Segilima Tepi Kuning & Biru Cerah -->
+                <path d="M100 12 L134 26 L172 34 L178 102 C178 144 146 172 100 188 C54 172 22 144 22 102 L28 34 L66 26 Z" fill="#008FD5" stroke="#FACC15" stroke-width="5" stroke-linejoin="round"/>
+                <path d="M100 15 L132 28 L169 36 L175 102 C175 142 144 169 100 184 C56 169 25 142 25 102 L31 36 L68 28 Z" fill="none" stroke="#0F172A" stroke-width="1.8" stroke-linejoin="round"/>
+                <!-- Lingkaran Dalam Kuning Atas & Ungu Bawah -->
+                <circle cx="100" cy="104" r="52" fill="#2E1065" stroke="#0F172A" stroke-width="1.5"/>
+                <path d="M 48,104 A 52,52 0 0,1 152,104 Z" fill="#FACC15"/>
+                <!-- Roda Gigi Oranye -->
+                <path d="M68 102 A32 32 0 0 1 132 102 L121 102 A21 21 0 0 0 79 102 Z" fill="#F97316" stroke="#0F172A" stroke-width="1.8"/>
+                <g fill="#F97316" stroke="#0F172A" stroke-width="1.4">
+                  <rect x="96" y="63" width="8" height="8" rx="1"/>
+                  <rect x="78" y="69" width="8" height="8" rx="1" transform="rotate(-30 82 73)"/>
+                  <rect x="65" y="83" width="8" height="8" rx="1" transform="rotate(-60 69 87)"/>
+                  <rect x="114" y="69" width="8" height="8" rx="1" transform="rotate(30 118 73)"/>
+                  <rect x="127" y="83" width="8" height="8" rx="1" transform="rotate(60 131 87)"/>
+                </g>
+                <!-- Palang Hijau Farmasi -->
+                <path d="M94 82 H106 V91 H115 V103 H106 V112 H94 V103 H85 V91 H94 Z" fill="#15803D" stroke="#0F172A" stroke-width="1.6"/>
+                <!-- Tumpukan Bata / Tambak Oranye -->
+                <polygon points="52,120 100,108 148,120 148,126 52,126" fill="#EA580C" stroke="#0F172A" stroke-width="1.3"/>
+                <line x1="100" y1="108" x2="100" y2="126" stroke="#0F172A" stroke-width="1.3"/>
+                <line x1="78" y1="114" x2="78" y2="126" stroke="#0F172A" stroke-width="1.3"/>
+                <line x1="122" y1="114" x2="122" y2="126" stroke="#0F172A" stroke-width="1.3"/>
+                <!-- Dua Ikan Biru Kiri & Kanan -->
+                <path d="M74 102 C67 109 67 121 76 128 L72 133 L81 131 C82 121 80 110 74 102 Z" fill="#38BDF8" stroke="#0F172A" stroke-width="1.5"/>
+                <path d="M126 102 C133 109 133 121 124 128 L128 133 L119 131 C118 121 120 110 126 102 Z" fill="#38BDF8" stroke="#0F172A" stroke-width="1.5"/>
+                <!-- Buku Terbuka Putih -->
+                <path d="M62 135 Q81 129 100 137 Q119 129 138 135 L134 146 Q117 140 100 147 Q83 140 66 146 Z" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.8"/>
+                <path d="M66 146 Q83 140 100 147 Q117 140 134 146 L132 150 Q116 144 100 151 Q84 144 68 150 Z" fill="#0F172A"/>
+                <!-- Teks Lengkung SMK NEGERI 8 WAJO & SUL - SEL -->
+                <text font-family="Arial Black, sans-serif" font-weight="900" font-size="14.5" fill="#0F172A" letter-spacing="0.8">
+                  <textPath href="#topArcNav" startOffset="50%" text-anchor="middle">SMK NEGERI 8 WAJO</textPath>
+                </text>
+                <text font-family="Arial Black, sans-serif" font-weight="900" font-size="15" fill="#0F172A" letter-spacing="1.5">
+                  <textPath href="#botArcNav" startOffset="50%" text-anchor="middle">SUL - SEL</textPath>
+                </text>
+                <!-- Dua Bintang Hitam -->
+                <polygon points="43,131 45,136 50,136 46,139 47,144 43,141 39,144 40,139 36,136 41,136" fill="#0F172A"/>
+                <polygon points="157,131 159,136 164,136 160,139 161,144 157,141 153,144 154,139 150,136 155,136" fill="#0F172A"/>
+              </svg>
+            </div>
+            <div>
+              <span class="block font-display font-extrabold text-base sm:text-lg md:text-xl tracking-tight header-brand-shimmer leading-none drop-shadow-sm">UPT SMKN 8 WAJO</span>
+              <span class="inline-flex items-center gap-1.5 text-[10px] font-extrabold text-amber-800 bg-gradient-to-r from-amber-100 via-yellow-50 to-sky-100 border border-amber-300/80 rounded-full px-2.5 py-0.5 tracking-wider uppercase mt-1 shadow-xs">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                <span>Terampil Mandiri Berakhlak</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- Desktop Nav Links dengan Button Animation Kontras Tinggi -->
+          <nav class="hidden md:flex items-center gap-1.5 lg:gap-2 text-xs lg:text-sm font-extrabold text-slate-700">
+            <a href="#tentang" class="nav-btn-anim rounded-full border border-transparent bg-slate-50/90 px-3.5 py-2 text-slate-700 hover:text-blue-700">Tentang</a>
+            <a href="#jurusan" class="nav-btn-anim rounded-full border border-transparent bg-slate-50/90 px-3.5 py-2 text-slate-700 hover:text-blue-700">Jurusan</a>
+            <a href="#guru" class="nav-btn-anim rounded-full border border-transparent bg-slate-50/90 px-3.5 py-2 text-slate-700 hover:text-blue-700">Guru</a>
+            <a href="#fasilitas" class="nav-btn-anim rounded-full border border-transparent bg-slate-50/90 px-3.5 py-2 text-slate-700 hover:text-blue-700">Fasilitas</a>
+            <a href="#postingan" class="nav-btn-anim rounded-full border border-transparent bg-slate-50/90 px-3.5 py-2 text-slate-700 hover:text-blue-700">Postingan</a>
+            <a href="#galeri" class="nav-btn-anim rounded-full border border-transparent bg-slate-50/90 px-3.5 py-2 text-slate-700 hover:text-blue-700">Galeri</a>
+          </nav>
+
+          <!-- Action Buttons (CTA + Mobile Menu Toggle) -->
+          <div class="flex items-center gap-2">
+            <button onclick="window.openLoginModal()" class="btn-anim btn-glow-blue group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] hover:from-[#163A5F] hover:to-[#0369A1] text-white font-extrabold text-xs sm:text-sm px-4 sm:px-6 py-2.5 shadow-lg shadow-blue-900/20">
+              <span>Portal Masuk</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 text-amber-300 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+            </button>
+            <button onclick="window.toggleMobileNav()" aria-label="Menu Navigasi" class="nav-btn-anim md:hidden w-10 h-10 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-[#0F2942]">
+              <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Dropdown Nav dengan Button Animation -->
+        <div id="mobile-nav-drawer" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2 shadow-lg">
+          <a href="#tentang" onclick="window.toggleMobileNav()" class="nav-btn-anim block rounded-full border border-transparent bg-slate-50 px-4 py-2.5 text-xs font-extrabold text-slate-700 hover:text-blue-700">Tentang</a>
+          <a href="#jurusan" onclick="window.toggleMobileNav()" class="nav-btn-anim block rounded-full border border-transparent bg-slate-50 px-4 py-2.5 text-xs font-extrabold text-slate-700 hover:text-blue-700">Jurusan</a>
+          <a href="#guru" onclick="window.toggleMobileNav()" class="nav-btn-anim block rounded-full border border-transparent bg-slate-50 px-4 py-2.5 text-xs font-extrabold text-slate-700 hover:text-blue-700">Guru</a>
+          <a href="#fasilitas" onclick="window.toggleMobileNav()" class="nav-btn-anim block rounded-full border border-transparent bg-slate-50 px-4 py-2.5 text-xs font-extrabold text-slate-700 hover:text-blue-700">Fasilitas</a>
+          <a href="#postingan" onclick="window.toggleMobileNav()" class="nav-btn-anim block rounded-full border border-transparent bg-slate-50 px-4 py-2.5 text-xs font-extrabold text-slate-700 hover:text-blue-700">Postingan</a>
+          <a href="#galeri" onclick="window.toggleMobileNav()" class="nav-btn-anim block rounded-full border border-transparent bg-slate-50 px-4 py-2.5 text-xs font-extrabold text-slate-700 hover:text-blue-700">Galeri</a>
+        </div>
+      </header>
+
+      <!-- HERO SECTION (Sesuai Gambar Referensi: Deep Navy-Slate + Dual-Line Gold/Cyan Headline + Glass Card Illustration) -->
+      <section id="beranda" class="relative bg-gradient-to-br from-[#0B172A] via-[#0E1D33] to-[#172E4E] text-white pt-14 pb-24 md:pt-20 md:pb-32 overflow-hidden">
+        <!-- Subtle Radial Cyan/Blue Ambient Glow at Top-Right -->
+        <div class="absolute -top-20 right-0 w-[460px] h-[460px] bg-cyan-400/15 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/3 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            <!-- Hero Left Copy -->
+            <div class="lg:col-span-6 text-center lg:text-left">
+              <!-- Top-Left Pill Badge -->
+              <div class="inline-flex items-center gap-2 rounded-full bg-white/10 border border-white/15 px-3.5 py-1.5 text-xs font-semibold text-amber-300 mb-6 backdrop-blur-sm">
+                <i data-lucide="award" class="w-3.5 h-3.5 text-cyan-300"></i>
+                <span>Akreditasi B • SPMB 2026/2027</span>
+              </div>
+
+              <!-- Main Headline (2 Lines Bold Uppercase) -->
+              <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-[46px] leading-[1.15] tracking-tight uppercase">
+                <span class="block text-white">
+                  GENERASI <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FBBF24] to-[#F59E0B]">VOKASI</span>
+                </span>
+                <span class="block text-white mt-1">
+                  <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#FDE68A] via-[#7DD3FC] to-[#38BDF8]">UNGGUL</span> &amp; SIAP KERJA
+                </span>
+              </h1>
+
+              <!-- Subtitle -->
+              <p class="mt-4 text-slate-300 text-sm md:text-base leading-relaxed max-w-md mx-auto lg:mx-0">
+                Pusat keunggulan kejuruan Teknologi Farmasi &amp; Agribisnis Perikanan di <strong class="text-white font-bold">SMKN 8 Wajo.</strong>
+              </p>
+
+              <!-- Two CTA Buttons Side-by-Side -->
+              <div class="mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                <button onclick="window.openSpmbModal()" class="btn-anim btn-glow-amber group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 text-slate-950 font-bold text-sm px-6 py-3 shadow-lg shadow-amber-500/25">
+                  <span>Daftar SPMB</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+                </button>
+                <a href="#jurusan" class="btn-anim btn-glow-blue group inline-flex items-center gap-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/15 text-slate-200 font-semibold text-sm px-6 py-3 backdrop-blur-sm">
+                  <span>Lihat Jurusan</span>
+                  <i data-lucide="compass" class="w-4 h-4 text-cyan-300 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+                </a>
+              </div>
+            </div>
+
+            <!-- Hero Right: Sleek Dark Glass Container Illustration Card (Matching Reference Image) -->
+            <div class="lg:col-span-6 flex justify-center lg:justify-end">
+              <div class="relative w-full max-w-md animate-float">
+                <!-- Overlapping Top-Right Golden-Amber Floating Badge -->
+                <div class="absolute -top-4 right-3 sm:right-5 z-20 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 rounded-2xl px-3.5 py-2 shadow-xl flex items-center gap-2 border border-amber-300/60">
+                  <div class="w-6 h-6 rounded-full bg-[#0E1D33] text-amber-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+                  </div>
+                  <div class="leading-tight">
+                    <div class="font-display font-extrabold text-[11px] uppercase tracking-tight">AKREDITASI B</div>
+                    <div class="font-display font-bold text-[10px] uppercase text-slate-900">VOKASI UNGGUL</div>
+                  </div>
+                </div>
+
+                <!-- Dark Glass Container -->
+                <div class="bg-slate-800/45 border border-white/10 rounded-3xl p-5 sm:p-6 backdrop-blur-md relative shadow-2xl">
+                  <svg viewBox="0 0 460 320" class="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="refScreenGrad" x1="120" y1="30" x2="415" y2="220" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#1D4ED8"/>
+                        <stop offset="50%" stop-color="#2563EB"/>
+                        <stop offset="100%" stop-color="#3B82F6"/>
+                      </linearGradient>
+                    </defs>
+
+                    <!-- Left Vertical Control Strip inside Card -->
+                    <rect x="20" y="28" width="66" height="236" rx="16" fill="#1E3352" fill-opacity="0.7" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+                    <!-- Top Pair Horizontal Pill Bars (Cyan & Amber) -->
+                    <rect x="34" y="54" width="38" height="9" rx="4.5" fill="#38BDF8"/>
+                    <rect x="34" y="72" width="28" height="9" rx="4.5" fill="#FBBF24"/>
+                    <!-- Middle Pair Horizontal Pill Bars (Emerald & Violet) -->
+                    <rect x="34" y="114" width="38" height="9" rx="4.5" fill="#34D399"/>
+                    <rect x="34" y="132" width="32" height="9" rx="4.5" fill="#A78BFA"/>
+                    <!-- Bottom Circular '+' Button -->
+                    <circle cx="53" cy="202" r="22" fill="#254066" stroke="#38BDF8" stroke-width="1.5" stroke-opacity="0.6"/>
+                    <path d="M44 202 H62 M53 193 V211" stroke="#93C5FD" stroke-width="2" stroke-linecap="round"/>
+
+                    <!-- Main Blue Presentation Screen -->
+                    <rect x="108" y="28" width="325" height="190" rx="22" fill="#0B192C" stroke="#38BDF8" stroke-width="2.5"/>
+                    <rect x="118" y="38" width="305" height="170" rx="15" fill="url(#refScreenGrad)"/>
+
+                    <!-- White Header Bars Inside Screen -->
+                    <rect x="142" y="58" width="95" height="11" rx="5.5" fill="#FFFFFF" fill-opacity="0.95"/>
+                    <rect x="142" y="78" width="142" height="7" rx="3.5" fill="#BAE6FD" fill-opacity="0.8"/>
+                    <rect x="142" y="92" width="112" height="7" rx="3.5" fill="#BAE6FD" fill-opacity="0.65"/>
+
+                    <!-- 3 Vertical Bar-Chart Columns (Yellow, Mint Green, White) -->
+                    <rect x="142" y="142" width="17" height="44" rx="5" fill="#FBBF24"/>
+                    <rect x="168" y="128" width="17" height="58" rx="5" fill="#34D399"/>
+                    <rect x="194" y="116" width="17" height="70" rx="5" fill="#FFFFFF"/>
+
+                    <!-- Circular Target / Donut Ring on Right of Screen -->
+                    <circle cx="332" cy="128" r="35" fill="#1E3A8A" fill-opacity="0.45" stroke="#FBBF24" stroke-width="4" stroke-dasharray="11 7"/>
+                    <circle cx="332" cy="128" r="14" fill="#FBBF24"/>
+
+                    <!-- Desk Surface Line -->
+                    <rect x="36" y="274" width="388" height="14" rx="7" fill="#38BDF8" fill-opacity="0.3"/>
+
+                    <!-- Left Stylized Student Avatar (Teal Shirt + White Laptop) -->
+                    <circle cx="164" cy="196" r="22" fill="#FDBA74"/>
+                    <path d="M142 191 C142 173, 186 173, 186 191" fill="#0F172A"/>
+                    <rect x="132" y="222" width="64" height="52" rx="18" fill="#10B981"/>
+                    <!-- White Laptop -->
+                    <path d="M138 242 H190 L196 274 H132 Z" fill="#F1F5F9"/>
+                    <circle cx="164" cy="258" r="4.5" fill="#2563EB"/>
+
+                    <!-- Right Stylized Mentor/Student Avatar (Orange Shirt + Light-Blue Tablet) -->
+                    <circle cx="308" cy="176" r="23" fill="#FED7AA"/>
+                    <path d="M285 170 C285 151, 331 151, 331 170" fill="#0F172A"/>
+                    <rect x="276" y="203" width="64" height="71" rx="20" fill="#F97316"/>
+                    <!-- Light-Blue Tablet -->
+                    <rect x="256" y="220" width="44" height="32" rx="6" fill="#38BDF8" stroke="#FFFFFF" stroke-width="2"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Smooth White Wave Curve Divider -->
+        <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
+          <svg class="relative block w-full h-14 sm:h-20" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,45 C420,115 1020,0 1440,58 L1440,120 L0,120 Z" fill="#F0F9FF"></path>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 1B: TENTANG SEKOLAH (Ringkas, Elegan & Berwarna)
+           ====================================================================== -->
+      <section id="tentang" class="py-12 md:py-16 bg-gradient-to-b from-[#F0F9FF] via-[#E0F2FE]/70 to-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="rounded-3xl bg-gradient-to-br from-[#F0F9FF] via-white to-[#EFF6FF] border border-sky-200/80 p-6 sm:p-10 shadow-lg shadow-sky-900/5">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div class="lg:col-span-7">
+                <div class="inline-flex items-center gap-2 rounded-full bg-blue-50 border border-blue-200/80 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-blue-700 mb-3">
+                  <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+                  <span>Tentang Sekolah</span>
+                </div>
+                <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 uppercase tracking-tight">
+                  PROFIL <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0F2942] via-blue-600 to-cyan-500">UPT SMKN 8 WAJO</span>
+                </h2>
+                <p class="mt-3 text-slate-600 text-sm sm:text-base leading-relaxed">
+                  Lembaga pendidikan menengah kejuruan negeri di Kabupaten Wajo yang berfokus mencetak lulusan kompeten, terampil, dan berkarakter di bidang <strong class="text-slate-900">Teknologi Farmasi</strong> dan <strong class="text-slate-900">Agribisnis Perikanan</strong> berbasis praktik industri modern.
+                </p>
+              </div>
+              <div class="lg:col-span-5 grid grid-cols-2 gap-3.5">
+                <div class="rounded-2xl bg-gradient-to-br from-[#0F2942] to-[#1E3A8A] p-4 text-white shadow-md">
+                  <i data-lucide="award" class="w-6 h-6 text-amber-400 mb-2"></i>
+                  <div class="font-display font-extrabold text-base">Akreditasi B</div>
+                  <div class="text-[11px] text-sky-200 mt-0.5">Terakreditasi Resmi BAN-S/M</div>
+                </div>
+                <div class="rounded-2xl bg-gradient-to-br from-teal-600 to-emerald-600 p-4 text-white shadow-md">
+                  <i data-lucide="briefcase" class="w-6 h-6 text-amber-200 mb-2"></i>
+                  <div class="font-display font-extrabold text-base">Link &amp; Match</div>
+                  <div class="text-[11px] text-teal-100 mt-0.5">Kurikulum Berbasis Industri</div>
+                </div>
+                <div class="rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 p-4 text-slate-950 shadow-md">
+                  <i data-lucide="flask-conical" class="w-6 h-6 text-slate-950 mb-2"></i>
+                  <div class="font-display font-extrabold text-base">Praktik Terpadu</div>
+                  <div class="text-[11px] text-slate-900/80 mt-0.5">Bengkel &amp; Lab Lengkap</div>
+                </div>
+                <div class="rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 p-4 text-white shadow-md">
+                  <i data-lucide="map-pin" class="w-6 h-6 text-cyan-300 mb-2"></i>
+                  <div class="font-display font-extrabold text-base">Kab. Wajo</div>
+                  <div class="text-[11px] text-indigo-100 mt-0.5">Sulawesi Selatan</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 2: 5 KARTU STATISTIK SEKOLAH
+           ====================================================================== -->
+      <section class="relative z-20 pt-2 pb-12 bg-gradient-to-b from-[#F8FAFC] to-[#EFF6FF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div id="stats-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-5">
+            <!-- Dirender dinamis oleh JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 3: KONSENTRASI KEAHLIAN (4 KARTU WARNA-WARNI)
+           ====================================================================== -->
+      <section id="jurusan" class="py-16 md:py-20 bg-gradient-to-br from-[#EFF6FF] via-[#F0FDFA] to-[#ECFEFF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 rounded-full bg-teal-50 border border-teal-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-teal-700">
+              <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
+              <span>Program Keahlian</span>
+            </div>
+            <h2 class="mt-3 font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-900 uppercase tracking-tight">
+              KONSENTRASI <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600">KEAHLIAN UNGGULAN</span>
+            </h2>
+          </div>
+
+          <div id="jurusan-grid" class="grid grid-cols-1 md:grid-cols-2 gap-7 max-w-4xl mx-auto">
+            <!-- Dirender dinamis oleh JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 3B: KENALAN DENGAN GURU SMKN 8 WAJO (Foto, Nama & Mapel)
+           ====================================================================== -->
+      <section id="guru" class="py-16 md:py-20 bg-gradient-to-b from-[#ECFEFF] via-[#EEF2FF]/70 to-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 rounded-full bg-indigo-50 border border-indigo-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-indigo-700">
+              <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+              <span>Pendidik Profesional</span>
+            </div>
+            <h2 class="mt-3 font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-900 uppercase tracking-tight">
+              GURU HEBAT <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0F2942] via-blue-600 to-cyan-500">SMKN 8 WAJO</span>
+            </h2>
+          </div>
+
+          <div id="guru-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7">
+            <!-- Dirender dinamis oleh JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 4: FASILITAS & BENGKEL PRAKTIK (3 KARTU)
+           ====================================================================== -->
+      <section id="fasilitas" class="py-16 md:py-20 bg-gradient-to-tr from-[#F8FAFC] via-[#E0F2FE]/60 to-[#F0FDFA]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 rounded-full bg-cyan-50 border border-cyan-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-cyan-700">
+              <span class="w-2 h-2 rounded-full bg-cyan-600 animate-pulse"></span>
+              <span>Sarana Prasarana</span>
+            </div>
+            <h2 class="mt-3 font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-900 uppercase tracking-tight">
+              FASILITAS &amp; <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-[#0F2942]">LABORATORIUM PRAKTIK</span>
+            </h2>
+          </div>
+
+          <div id="fasilitas-grid" class="grid grid-cols-1 md:grid-cols-3 gap-7">
+            <!-- Dirender dinamis oleh JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 5: ALUR SPMB (4 LANGKAH DENGAN PENOMORAN BERTINGKAT RAPI)
+           ====================================================================== -->
+      <section id="alur-spmb" class="py-16 md:py-20 bg-gradient-to-br from-[#F0FDFA] via-[#FFFBEB]/65 to-[#EEF2FF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-14">
+            <div class="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-amber-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-amber-700">
+              <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+              <span>Alur Pendaftaran</span>
+            </div>
+            <h2 class="mt-3 font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-900 uppercase tracking-tight">
+              4 LANGKAH <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-rose-500">MUDAH SPMB</span>
+            </h2>
+          </div>
+
+          <div class="relative">
+            <!-- Horizontal Connector Line on Desktop -->
+            <div class="hidden lg:block absolute top-11 left-[12%] right-[12%] h-0.5 border-t-2 border-dashed border-sky-300 pointer-events-none"></div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 relative z-10">
+              <!-- Step 01 -->
+              <div class="card-spring relative bg-white rounded-3xl pt-10 pb-6 px-6 shadow-md border border-sky-100/90 text-center flex flex-col items-center">
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full bg-gradient-to-br from-[#0F2942] to-[#2563EB] text-white font-display font-extrabold text-sm flex items-center justify-center shadow-lg ring-4 ring-white">
+                  01
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3.5">
+                  <i data-lucide="compass" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-display font-extrabold text-base text-slate-900 uppercase">Pilih Jurusan</h3>
+                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Tentukan minat kejuruan Farmasi atau Perikanan.</p>
+              </div>
+
+              <!-- Step 02 -->
+              <div class="card-spring relative bg-white rounded-3xl pt-10 pb-6 px-6 shadow-md border border-sky-100/90 text-center flex flex-col items-center">
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 text-white font-display font-extrabold text-sm flex items-center justify-center shadow-lg ring-4 ring-white">
+                  02
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center mb-3.5">
+                  <i data-lucide="file-edit" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-display font-extrabold text-base text-slate-900 uppercase">Isi Formulir</h3>
+                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Lengkapi biodata NISN dan buat akun SPMB online.</p>
+              </div>
+
+              <!-- Step 03 -->
+              <div class="card-spring relative bg-white rounded-3xl pt-10 pb-6 px-6 shadow-md border border-sky-100/90 text-center flex flex-col items-center">
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full bg-gradient-to-br from-amber-500 to-orange-500 text-white font-display font-extrabold text-sm flex items-center justify-center shadow-lg ring-4 ring-white">
+                  03
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-3.5">
+                  <i data-lucide="clipboard-check" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-display font-extrabold text-base text-slate-900 uppercase">Verifikasi Berkas</h3>
+                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Panitia sekolah memverifikasi data dan berkas siswa.</p>
+              </div>
+
+              <!-- Step 04 -->
+              <div class="card-spring relative bg-white rounded-3xl pt-10 pb-6 px-6 shadow-md border border-sky-100/90 text-center flex flex-col items-center">
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 w-11 h-11 rounded-full bg-gradient-to-br from-violet-600 to-indigo-600 text-white font-display font-extrabold text-sm flex items-center justify-center shadow-lg ring-4 ring-white">
+                  04
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-violet-50 text-violet-600 flex items-center justify-center mb-3.5">
+                  <i data-lucide="badge-check" class="w-6 h-6"></i>
+                </div>
+                <h3 class="font-display font-extrabold text-base text-slate-900 uppercase">Cetak Kartu</h3>
+                <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Pantau hasil seleksi dan cetak kartu bukti peserta.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-10 text-center">
+            <button onclick="window.openSpmbModal()" class="btn-anim btn-glow-blue group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs sm:text-sm px-7 py-3.5 shadow-lg">
+              <span>Mulai Pendaftaran Online</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 text-amber-300 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 6: JEJAK ALUMNI (Elegan seperti Section Guru: Nama & Kuliah/Kerja)
+           ====================================================================== -->
+      <section id="testimoni" class="py-16 md:py-20 bg-gradient-to-b from-[#EEF2FF] via-[#E0E7FF]/55 to-[#F0F9FF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 rounded-full bg-violet-50 border border-violet-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-violet-700">
+              <span class="w-2 h-2 rounded-full bg-violet-600 animate-pulse"></span>
+              <span>Jejak Alumni</span>
+            </div>
+            <h2 class="mt-3 font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-900 uppercase tracking-tight">
+              JEJAK <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-purple-500 to-pink-500">ALUMNI SMKN 8 WAJO</span>
+            </h2>
+          </div>
+
+          <div id="testimoni-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7">
+            <!-- Dirender dinamis oleh JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 6B: POSTINGAN KEGIATAN SMKN 8 WAJO (Dikelola dari Dashboard)
+           ====================================================================== -->
+      <section id="postingan" class="py-16 md:py-20 bg-gradient-to-tr from-[#F0F9FF] via-[#F8FAFC] to-[#EFF6FF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12">
+            <div class="inline-flex items-center gap-2 rounded-full bg-blue-50 border border-blue-200/80 px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-blue-700">
+              <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+              <span>Berita &amp; Agenda</span>
+            </div>
+            <h2 class="mt-3 font-display font-extrabold text-2xl sm:text-3xl md:text-4xl text-slate-900 uppercase tracking-tight">
+              POSTINGAN <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#0F2942] via-blue-600 to-cyan-500">KEGIATAN SEKOLAH</span>
+            </h2>
+          </div>
+
+          <div id="postingan-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+            <!-- Dirender dinamis oleh JavaScript -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 7: GALERI KEGIATAN INSTAGRAM @smkn8_wajo & CTA BANNER VIBRANT
+           ====================================================================== -->
+      <section id="galeri" class="py-16 md:py-20 bg-gradient-to-br from-[#F0F9FF] via-[#FDF2F8]/60 to-[#EFF6FF]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            <!-- Left: Galeri Kegiatan Sekolah (Instagram Official Feed @smkn8_wajo) -->
+            <div class="lg:col-span-7 flex flex-col justify-between">
+              <div class="flex flex-wrap items-end justify-between gap-3 mb-5">
+                <div>
+                  <div class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-50 to-amber-50 border border-pink-200/80 px-3.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-pink-700 mb-2">
+                    <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-600"></i>
+                    <span>@smkn8_wajo</span>
+                  </div>
+                  <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 uppercase tracking-tight">
+                    GALERI <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-rose-500 to-amber-500">INSTAGRAM SEKOLAH</span>
+                  </h2>
+                </div>
+                <a href="https://www.instagram.com/smkn8_wajo/" target="_blank" rel="noopener noreferrer" class="btn-anim group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-600 via-pink-600 to-amber-500 text-white font-bold text-xs px-4 py-2 shadow-md shadow-pink-500/20">
+                  <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+                  <span>Ikuti @smkn8_wajo</span>
+                  <i data-lucide="external-link" class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5"></i>
+                </a>
+              </div>
+              <div id="galeri-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Dirender dinamis oleh JavaScript (Instagram Embed + Fallback Card) -->
+              </div>
+            </div>
+
+            <!-- Right: Ready To Join CTA Card -->
+            <div class="lg:col-span-5">
+              <div class="h-full rounded-3xl bg-gradient-to-br from-[#0D6E8A] via-[#0F2942] to-[#312E81] p-8 sm:p-10 text-white shadow-xl flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-56 h-56 bg-cyan-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="absolute top-6 right-10 w-32 h-32 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="relative z-10">
+                  <span class="inline-block rounded-full bg-white/15 backdrop-blur-sm px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-amber-300 mb-4">
+                    SPMB 2026/2027
+                  </span>
+                  <h3 class="font-display font-extrabold text-2xl sm:text-4xl leading-tight uppercase">
+                    SIAP BERGABUNG BERSAMA KAMI?
+                  </h3>
+                  <p class="mt-3 text-slate-200 text-sm leading-relaxed max-w-sm">
+                    Raih masa depan gemilang dengan keahlian vokasi berstandar industri.
+                  </p>
+                </div>
+
+                <div class="mt-8 flex flex-wrap items-center justify-between gap-4 relative z-10">
+                  <button onclick="window.openSpmbModal()" class="btn-anim btn-glow-white group inline-flex items-center gap-2.5 rounded-full bg-white text-navy-900 font-extrabold text-sm px-7 py-3.5 shadow-lg">
+                    <span>DAFTAR SEKARANG</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-blue-600 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+                  </button>
+
+                  <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center backdrop-blur-sm">
+                    <i data-lucide="graduation-cap" class="w-8 h-8 text-amber-300"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           SECTION 8: FOOTER RINGKAS & ELEGAN SMKN 8 WAJO
+           ====================================================================== -->
+      <footer class="bg-navy-900 text-slate-300 pt-12 pb-8 border-t border-white/10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-8 border-b border-white/10">
+            <!-- School Identity -->
+            <div class="flex items-center gap-3.5">
+              <div class="w-11 h-11 rounded-full bg-white p-0.5 shadow-md flex items-center justify-center overflow-hidden">
+                <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="100" cy="100" r="98" fill="#FFFFFF"/>
+                  <path d="M100 12 L134 26 L172 34 L178 102 C178 144 146 172 100 188 C54 172 22 144 22 102 L28 34 L66 26 Z" fill="#008FD5" stroke="#FACC15" stroke-width="5" stroke-linejoin="round"/>
+                  <circle cx="100" cy="104" r="52" fill="#2E1065"/>
+                  <path d="M 48,104 A 52,52 0 0,1 152,104 Z" fill="#FACC15"/>
+                  <path d="M94 82 H106 V91 H115 V103 H106 V112 H94 V103 H85 V91 H94 Z" fill="#15803D"/>
+                  <path d="M62 135 Q81 129 100 137 Q119 129 138 135 L134 146 Q117 140 100 147 Q83 140 66 146 Z" fill="#FFFFFF"/>
+                </svg>
+              </div>
+              <div>
+                <div class="font-display font-extrabold text-white text-lg leading-none">UPT SMKN 8 WAJO</div>
+                <div class="text-xs text-cyan-300 mt-1">Akreditasi B • Kabupaten Wajo, Sulawesi Selatan</div>
+              </div>
+            </div>
+
+            <!-- Minimal Footer Links -->
+            <div class="flex flex-wrap items-center gap-6 text-xs font-semibold text-slate-300">
+              <a href="#tentang" class="hover:text-amber-300 transition-colors">Tentang Sekolah</a>
+              <a href="#jurusan" class="hover:text-emerald-300 transition-colors">Jurusan</a>
+              <a href="#guru" class="hover:text-indigo-300 transition-colors">Guru</a>
+              <a href="#fasilitas" class="hover:text-cyan-300 transition-colors">Fasilitas</a>
+              <a href="#postingan" class="hover:text-blue-300 transition-colors">Postingan</a>
+              <a href="#galeri" class="hover:text-pink-300 transition-colors">Galeri</a>
+              <button onclick="window.openSpmbModal()" class="hover:text-amber-300 transition-colors">Daftar SPMB</button>
+              <button onclick="window.openLoginModal()" class="hover:text-sky-300 transition-colors">Portal Masuk</button>
+            </div>
+          </div>
+
+          <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+            <p>&copy; 2026 UPT SMKN 8 WAJO. Seluruh Hak Cipta Dilindungi.</p>
+            <p class="text-slate-400">info@smkn8wajo.sch.id • (0485) 21088</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- ========================================================================
+         VIEW 2: PORTAL DASHBOARD RESPONSIF (ADMIN & CALON SISWA SPMB)
+         Selaras dengan desain halaman depan: Deep Navy Hero, Glassmorphism Sidebar & Button Animations
+         ======================================================================== -->
+    <div id="dashboard-view" class="hidden min-h-screen bg-gradient-to-b from-[#F0F9FF] via-slate-50 to-white">
+      <!-- DESKTOP FIXED SIDEBAR (Hidden on Mobile < lg) -->
+      <aside class="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-72 bg-white/90 backdrop-blur-xl border-r border-sky-200/80 z-40 shadow-xl shadow-slate-900/5">
+        <div class="h-1 w-full bg-gradient-to-r from-[#0F2942] via-[#0284C7] to-[#F59E0B]"></div>
+        <div class="p-6 border-b border-slate-200/70 flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full bg-white p-0.5 shadow-md ring-2 ring-[#0284C7] flex items-center justify-center overflow-hidden shrink-0">
+            <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="100" r="98" fill="#FFFFFF"/>
+              <path d="M100 12 L134 26 L172 34 L178 102 C178 144 146 172 100 188 C54 172 22 144 22 102 L28 34 L66 26 Z" fill="#008FD5" stroke="#FACC15" stroke-width="5"/>
+              <circle cx="100" cy="104" r="52" fill="#2E1065"/>
+              <path d="M 48,104 A 52,52 0 0,1 152,104 Z" fill="#FACC15"/>
+              <path d="M94 82 H106 V91 H115 V103 H106 V112 H94 V103 H85 V91 H94 Z" fill="#15803D"/>
+            </svg>
+          </div>
+          <div>
+            <div class="font-display font-extrabold header-brand-shimmer text-sm leading-none">UPT SMKN 8 WAJO</div>
+            <div id="sidebar-role-badge" class="inline-block rounded-full bg-sky-50 border border-sky-200 px-2.5 py-0.5 text-[10px] font-extrabold text-blue-700 uppercase tracking-wider mt-1.5">Portal Dashboard</div>
+          </div>
+        </div>
+
+        <!-- Navigation Links Container -->
+        <nav id="desktop-sidebar-nav" class="flex-1 p-4 space-y-2 overflow-y-auto">
+          <!-- Diisi dinamis sesuai role Admin atau Siswa -->
+        </nav>
+
+        <!-- Sidebar Bottom Actions -->
+        <div class="p-4 border-t border-slate-200/70 space-y-2.5">
+          <button onclick="window.switchToLanding()" class="btn-anim btn-glow-blue w-full flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-50 to-blue-50 hover:from-sky-100 hover:to-blue-100 border border-sky-200 text-blue-800 font-bold text-xs py-3 px-4 shadow-xs">
+            <i data-lucide="globe" class="w-4 h-4 text-blue-600"></i>
+            <span>Beranda Publik</span>
+          </button>
+          <button onclick="window.handleLogout()" class="btn-anim w-full flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white font-bold text-xs py-3 px-4 shadow-md shadow-rose-500/20">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span>Keluar Akun</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN DASHBOARD CONTENT AREA -->
+      <div class="lg:pl-72 pb-28 lg:pb-12 min-h-screen flex flex-col">
+        <!-- Deep Navy Hero Header Banner Selaras Halaman Depan -->
+        <header class="relative bg-gradient-to-br from-[#081729] via-[#0F2942] to-[#1A3E6C] text-white px-4 sm:px-8 pt-6 pb-10 overflow-hidden shadow-lg">
+          <div class="absolute -top-10 right-10 w-64 h-64 bg-cyan-400/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute bottom-0 left-1/3 w-56 h-56 bg-amber-400/15 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="max-w-6xl mx-auto relative z-10 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5">
+              <div class="lg:hidden w-11 h-11 rounded-full bg-white p-0.5 shadow-md ring-2 ring-cyan-400 flex items-center justify-center overflow-hidden shrink-0">
+                <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="100" cy="100" r="98" fill="#FFFFFF"/>
+                  <path d="M100 12 L134 26 L172 34 L178 102 C178 144 146 172 100 188 C54 172 22 144 22 102 L28 34 L66 26 Z" fill="#008FD5" stroke="#FACC15" stroke-width="5"/>
+                  <circle cx="100" cy="104" r="52" fill="#2E1065"/>
+                  <path d="M 48,104 A 52,52 0 0,1 152,104 Z" fill="#FACC15"/>
+                  <path d="M94 82 H106 V91 H115 V103 H106 V112 H94 V103 H85 V91 H94 Z" fill="#15803D"/>
+                </svg>
+              </div>
+              <div>
+                <div class="inline-flex items-center gap-1.5 rounded-full bg-white/10 border border-white/20 px-3 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-amber-300 mb-1">
+                  <i data-lucide="sparkles" class="w-3 h-3 text-cyan-300"></i>
+                  <span>UPT SMKN 8 WAJO</span>
+                </div>
+                <h1 id="dashboard-header-title" class="font-display font-extrabold text-xl sm:text-2xl md:text-3xl text-shimmer-vokasi uppercase tracking-tight">Dashboard</h1>
+                <p id="dashboard-user-subtitle" class="text-xs text-sky-200/90 mt-0.5">Panel Portal</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2.5">
+              <button onclick="window.switchToLanding()" class="btn-anim btn-glow-blue inline-flex items-center gap-1.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 px-4 py-2 text-xs font-bold text-white shadow">
+                <i data-lucide="globe" class="w-3.5 h-3.5 text-cyan-300"></i>
+                <span>Beranda</span>
+              </button>
+              <button onclick="window.handleLogout()" class="btn-anim btn-glow-amber inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-300 hover:to-orange-400 px-4 py-2 text-xs font-extrabold text-slate-950 shadow">
+                <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                <span>Keluar</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dynamic Tab Content -->
+        <main id="dashboard-content" class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 -mt-5 relative z-20">
+          <!-- Konten dashboard dirender dinamis oleh JavaScript -->
+        </main>
+      </div>
+
+      <!-- MOBILE FLOATING BOTTOM NAVIGATION BAR (Visible only on Mobile < lg) -->
+      <nav id="mobile-bottom-nav" class="lg:hidden fixed bottom-3 left-3 right-3 z-50 bg-navy-900/95 backdrop-blur-xl border border-white/15 rounded-2xl shadow-2xl px-2 py-2 flex items-center justify-around">
+        <!-- Diisi dinamis sesuai role Admin atau Siswa -->
+      </nav>
+    </div>
+
+    <!-- ========================================================================
+         MODAL 1: PORTAL LOGIN 1 PINTU (Single Unified Login: Email Admin / NISN Siswa)
+         ======================================================================== -->
+    <div id="login-modal" class="hidden fixed inset-0 z-[1000020] bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4">
+      <div class="bg-gradient-to-b from-white via-sky-50/40 to-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-sky-200/80 relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0F2942] via-[#0284C7] to-[#F59E0B]"></div>
+
+        <button onclick="window.closeLoginModal()" class="btn-anim absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100/90 hover:bg-slate-200 flex items-center justify-center text-slate-600">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+
+        <div class="flex flex-col items-center text-center mb-6 pt-1">
+          <div class="w-14 h-14 rounded-full bg-white p-0.5 shadow-lg shadow-sky-900/15 ring-2 ring-[#0284C7] flex items-center justify-center overflow-hidden mb-3">
+            <svg viewBox="0 0 200 200" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="100" r="98" fill="#FFFFFF"/>
+              <path d="M100 12 L134 26 L172 34 L178 102 C178 144 146 172 100 188 C54 172 22 144 22 102 L28 34 L66 26 Z" fill="#008FD5" stroke="#FACC15" stroke-width="5"/>
+              <circle cx="100" cy="104" r="52" fill="#2E1065"/>
+              <path d="M 48,104 A 52,52 0 0,1 152,104 Z" fill="#FACC15"/>
+              <path d="M94 82 H106 V91 H115 V103 H106 V112 H94 V103 H85 V91 H94 Z" fill="#15803D"/>
+            </svg>
+          </div>
+          <h3 class="font-display font-extrabold text-xl text-slate-900 tracking-tight">Portal Masuk</h3>
+          <p class="text-[11px] font-bold text-blue-700 uppercase tracking-wider mt-0.5">UPT SMKN 8 WAJO</p>
+        </div>
+
+        <!-- Formulir Login Tunggal 1 Pintu -->
+        <form id="form-unified-login" onsubmit="window.submitUnifiedLogin(event)" class="space-y-3.5">
+          <div>
+            <div class="relative">
+              <input type="text" id="unified-login-id" required placeholder="NISN atau Email Admin" class="w-full rounded-2xl border border-slate-200 bg-white/90 pl-4 pr-10 py-3 text-sm font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none shadow-2xs" />
+              <i data-lucide="user-check" class="w-4 h-4 text-blue-500 absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+            </div>
+          </div>
+          <div>
+            <div class="relative">
+              <input type="password" id="unified-login-pass" required placeholder="Kata Sandi" class="w-full rounded-2xl border border-slate-200 bg-white/90 pl-4 pr-10 py-3 text-sm font-medium focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 outline-none shadow-2xs" />
+              <i data-lucide="lock" class="w-4 h-4 text-blue-500 absolute right-3.5 top-1/2 -translate-y-1/2"></i>
+            </div>
+          </div>
+          <button type="submit" class="btn-anim btn-glow-blue group w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] hover:from-[#163A5F] hover:to-[#0369A1] text-white font-extrabold text-sm py-3.5 shadow-lg mt-1">
+            <span>Masuk</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-amber-300 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+          </button>
+          <p class="text-center text-xs text-slate-500 pt-1">
+            Belum daftar SPMB?
+            <button type="button" onclick="window.closeLoginModal(); window.openSpmbModal();" class="text-blue-600 font-extrabold hover:underline">Daftar</button>
+          </p>
+        </form>
+
+        <!-- QUICK LOGIN SHORTCUTS (Hanya muncul saat IS_PREVIEW = true) -->
+        <div id="preview-quick-login" class="hidden mt-5 pt-4 border-t border-dashed border-amber-300/80 bg-amber-50/70 -mx-6 -mb-6 sm:-mx-7 sm:-mb-7 p-4 rounded-b-3xl">
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="window.quickLogin('admin')" class="btn-anim btn-glow-blue rounded-full bg-navy-800 text-white text-xs font-bold py-2 px-3 shadow">
+              Demo Admin
+            </button>
+            <button type="button" onclick="window.quickLogin('siswa')" class="btn-anim btn-glow-amber rounded-full bg-amber-500 text-slate-950 text-xs font-extrabold py-2 px-3 shadow">
+              Demo Siswa
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         MODAL 2: FORMULIR PENDAFTARAN SPMB ONLINE PUBLIK
+         ======================================================================== -->
+    <div id="spmb-modal" class="hidden fixed inset-0 z-[1000020] bg-slate-950/65 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-slate-100 relative my-8">
+        <button onclick="window.closeSpmbModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="mb-6">
+          <span class="inline-block rounded-full bg-amber-100 text-amber-800 text-[11px] font-extrabold uppercase px-3 py-1 mb-2">
+            SPMB Online 2026/2027
+          </span>
+          <h3 class="font-display font-extrabold text-2xl text-slate-900">Formulir Pendaftaran Siswa Baru</h3>
+          <p class="text-xs text-slate-500 mt-1">Akun NISN & Kata Sandi ini langsung dapat digunakan untuk memantau status seleksi.</p>
+        </div>
+
+        <form id="form-public-spmb" onsubmit="window.submitPublicSpmb(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">NISN (10 Digit) *</label>
+              <input type="text" id="spmb-nisn" required minlength="5" maxlength="15" placeholder="0098765432" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Buat Kata Sandi *</label>
+              <input type="password" id="spmb-password" required minlength="4" placeholder="Minimal 4 karakter" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-blue-600 outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nama Lengkap Calon Siswa *</label>
+            <input type="text" id="spmb-nama" required placeholder="Sesuai Ijazah / Kartu Keluarga" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-blue-600 outline-none" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Asal Sekolah (SMP/MTs) *</label>
+              <input type="text" id="spmb-asal" required placeholder="Contoh: SMPN 1 Sengkang" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">No. WhatsApp Aktif *</label>
+              <input type="tel" id="spmb-hp" required placeholder="0812xxxxxxxx" class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-blue-600 outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Pilihan Konsentrasi Keahlian *</label>
+            <select id="spmb-jurusan" required class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm bg-white focus:border-blue-600 outline-none">
+              <!-- Diisi dinamis dari daftar jurusan -->
+            </select>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="btn-anim btn-glow-amber group w-full inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-sm py-3.5 shadow-lg">
+              <span>Kirim Pendaftaran SPMB</span>
+              <i data-lucide="send" class="w-4 h-4 transition-transform group-hover:translate-x-1.5"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         MODAL 3: DETAIL JURUSAN PUBLIK
+         ======================================================================== -->
+    <div id="jurusan-detail-modal" class="hidden fixed inset-0 z-[1000020] bg-slate-950/65 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+        <button onclick="document.getElementById('jurusan-detail-modal').classList.add('hidden')" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div id="jurusan-detail-body"></div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         MODAL 4: BACA DETAIL POSTINGAN KEGIATAN SEKOLAH
+         ======================================================================== -->
+    <div id="postingan-detail-modal" class="hidden fixed inset-0 z-[1000020] bg-slate-950/65 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative my-8">
+        <button onclick="document.getElementById('postingan-detail-modal').classList.add('hidden')" class="btn-anim absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-700 shadow-md">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div id="postingan-detail-body"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ==========================================================================
+       APPLICATION LOGIC (ES MODULE + SUPABASE + STATE MANAGEMENT)
+       ========================================================================== -->
+  <script type="module">
+    import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+    // ========================================================================
+    // 1. SAKLAR DEPLOYMENT & KONFIGURASI SUPABASE
+    // ========================================================================
+    const IS_PREVIEW = false;
+    const SUPABASE_URL = "https://voklbetpgdloalovxmca.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_kQPOZl4Pea_j7i6-1x5xbg_fzS2orPm";
+
+    const supabase = (!IS_PREVIEW && SUPABASE_URL.startsWith('http'))
+      ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
+
+    // Registrasi Dinamis Service Worker untuk PWA 1 File via Blob
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        self.addEventListener('install', (e) => self.skipWaiting());
+        self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()));
+        self.addEventListener('fetch', (e) => {});
+      `;
+      const swBlob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swUrl).catch(() => {});
+    }
+
+    // ========================================================================
+    // 2. DATA STATE (DUMMY MINIMAL SAAT PREVIEW, KOSONG SAAT PRODUCTION)
+    // ========================================================================
+    const appState = {
+      currentUser: null, // { role: 'admin' | 'siswa', data: {...} }
+      activeAdminTab: 'statistik',
+      activeSiswaTab: 'kartu',
+      editingJurusanId: null,
+      editingFasilitasId: null,
+      editingGuruId: null,
+      editingPostinganId: null,
+
+      statistik: IS_PREVIEW
+        ? {
+            id: 'stat-1',
+            tingkat_kelulusan: '98%',
+            jumlah_jurusan: '2',
+            rasio_guru_siswa: '15:1',
+            jumlah_ekskul: 'Akreditasi B',
+            total_siswa: '650+'
+          }
+        : {
+            id: null,
+            tingkat_kelulusan: '-',
+            jumlah_jurusan: '0',
+            rasio_guru_siswa: '-',
+            jumlah_ekskul: 'Akreditasi B',
+            total_siswa: '0'
+          },
+
+      jurusan: IS_PREVIEW
+        ? [
+            {
+              id: 'jur-1',
+              singkatan: 'FARMASI',
+              nama_jurusan: 'Teknologi Farmasi',
+              deskripsi: 'Peracikan sediaan obat, pelayanan farmasi klinis & komunitas, manajemen apotek, serta kewirausahaan kesehatan.',
+              warna_tema: 'teal',
+              ikon: 'flask-conical'
+            },
+            {
+              id: 'jur-2',
+              singkatan: 'PERIKANAN',
+              nama_jurusan: 'Agribisnis Perikanan',
+              deskripsi: 'Budidaya perikanan air payau dan air tawar, manajemen kualitas air, pembenihan ikan, dan agribisnis perikanan modern.',
+              warna_tema: 'blue',
+              ikon: 'fish'
+            }
+          ]
+        : [],
+
+      guru_sekolah: IS_PREVIEW
+        ? [
+            {
+              id: 'guru-1',
+              nama_guru: 'Firnanda Bastian, S.Pd., Gr.',
+              jabatan_mapel: 'Informatika & Lab Komputer',
+              foto_url: ''
+            },
+            {
+              id: 'guru-2',
+              nama_guru: 'apt. Nurul Hidayah, S.Farm.',
+              jabatan_mapel: 'Teknologi Farmasi',
+              foto_url: ''
+            },
+            {
+              id: 'guru-3',
+              nama_guru: 'Muh. Ardiansyah, S.Pi.',
+              jabatan_mapel: 'Agribisnis Perikanan',
+              foto_url: ''
+            },
+            {
+              id: 'guru-4',
+              nama_guru: 'Hj. St. Rahmah, S.Pd., M.Pd.',
+              jabatan_mapel: 'Bahasa Indonesia',
+              foto_url: ''
+            }
+          ]
+        : [],
+
+      fasilitas: IS_PREVIEW
+        ? [
+            {
+              id: 'fas-1',
+              nama_fasilitas: 'Bengkel Farmasi',
+              deskripsi: 'Sarana praktik peracikan sediaan obat, simulasi pelayanan apotek, dan pengujian farmasetika standar industri.',
+              foto_url: 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+              id: 'fas-2',
+              nama_fasilitas: 'Lab Komputer',
+              deskripsi: 'Laboratorium komputer berkecepatan tinggi untuk pembelajaran teknologi informasi, administrasi digital, dan asesmen.',
+              foto_url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+              id: 'fas-3',
+              nama_fasilitas: 'Lab Perikanan',
+              deskripsi: 'Laboratorium analisis kualitas air, pembenihan, pakan alami, dan praktik budidaya perikanan terpadu.',
+              foto_url: 'https://images.unsplash.com/photo-1535591273668-578e31182c4f?auto=format&fit=crop&w=800&q=80'
+            }
+          ]
+        : [],
+
+      pendaftar_spmb: IS_PREVIEW
+        ? [
+            {
+              id: 'spmb-1',
+              nisn: '0081234567',
+              password: '1234',
+              nama_lengkap: 'Andi Muh. Faiz',
+              asal_sekolah: 'SMPN 1 Sengkang',
+              pilihan_jurusan: 'Teknologi Farmasi',
+              no_hp: '085242110099',
+              status_seleksi: 'Diterima',
+              created_at: new Date().toISOString()
+            },
+            {
+              id: 'spmb-2',
+              nisn: '0087654321',
+              password: '1234',
+              nama_lengkap: 'Nurul Hikmah Putri',
+              asal_sekolah: 'MTs As’adiyah Wajo',
+              pilihan_jurusan: 'Agribisnis Perikanan',
+              no_hp: '081355443322',
+              status_seleksi: 'Menunggu Verifikasi',
+              created_at: new Date().toISOString()
+            }
+          ]
+        : [],
+
+      testimoni_galeri: IS_PREVIEW
+        ? [
+            {
+              id: 'tg-1',
+              tipe: 'testimoni',
+              judul_atau_nama: 'Besek Rahmawati',
+              peran_atau_keterangan: 'Apotek Kimia Farma Makassar',
+              isi_atau_foto_url: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=600&q=80',
+              rating: 5
+            },
+            {
+              id: 'tg-2',
+              tipe: 'testimoni',
+              judul_atau_nama: 'Andi Muh. Ikhsan',
+              peran_atau_keterangan: 'Mahasiswa Perikanan Unhas',
+              isi_atau_foto_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80',
+              rating: 5
+            },
+            {
+              id: 'tg-5',
+              tipe: 'testimoni',
+              judul_atau_nama: 'Nurul Aulia, A.Md.Farm.',
+              peran_atau_keterangan: 'RSUD Lamaddukkelleng Sengkang',
+              isi_atau_foto_url: '',
+              rating: 5
+            },
+            {
+              id: 'tg-6',
+              tipe: 'testimoni',
+              judul_atau_nama: 'Muh. Fajar Siddiq',
+              peran_atau_keterangan: 'Wirausaha Budidaya Tambak Wajo',
+              isi_atau_foto_url: '',
+              rating: 5
+            },
+            {
+              id: 'tg-3',
+              tipe: 'galeri',
+              judul_atau_nama: 'Kegiatan & Praktik Vokasi',
+              peran_atau_keterangan: 'Instagram Resmi @smkn8_wajo',
+              isi_atau_foto_url: 'https://www.instagram.com/smkn8_wajo/',
+              rating: 5
+            },
+            {
+              id: 'tg-4',
+              tipe: 'galeri',
+              judul_atau_nama: 'Dokumentasi Siswa SMKN 8 Wajo',
+              peran_atau_keterangan: 'Teknologi Farmasi & Agribisnis Perikanan',
+              isi_atau_foto_url: 'https://www.instagram.com/smkn8_wajo/',
+              rating: 5
+            }
+          ]
+        : [],
+
+      postingan_kegiatan: IS_PREVIEW
+        ? [
+            {
+              id: 'post-1',
+              judul: 'Uji Kompetensi Keahlian (UKK) Teknologi Farmasi',
+              kategori: 'Praktik Kejuruan',
+              tanggal: '12 November 2026',
+              ringkasan: 'Siswa kelas XII melaksanakan praktik peracikan sediaan farmasi dan konseling obat dengan penguji eksternal industri.',
+              foto_url: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+              id: 'post-2',
+              judul: 'Panen Perdana Budidaya Ikan Nila Bioflok',
+              kategori: 'Agribisnis',
+              tanggal: '04 November 2026',
+              ringkasan: 'Jurusan Agribisnis Perikanan sukses memanen hasil budidaya sistem bioflok di laboratorium perikanan terpadu sekolah.',
+              foto_url: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'
+            },
+            {
+              id: 'post-3',
+              judul: 'Sosialisasi SPMB & Pameran Karya Vokasi 2026',
+              kategori: 'Agenda Sekolah',
+              tanggal: '25 Oktober 2026',
+              ringkasan: 'UPT SMKN 8 Wajo menggelar gelar karya produk farmasi herbal dan olahan perikanan bagi pelajar SMP/MTs se-Kabupaten Wajo.',
+              foto_url: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80'
+            }
+          ]
+        : []
+    };
+
+    // ========================================================================
+    // 3. HELPER FUNCTIONS (TOAST, THEME COLOR MAPS, SANITIZE)
+    // ========================================================================
+    window.toggleMobileNav = function () {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      if (drawer) drawer.classList.toggle('hidden');
+    };
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const styles = {
+        success: 'bg-emerald-600 text-white border-emerald-400',
+        error: 'bg-rose-600 text-white border-rose-400',
+        info: 'bg-navy-800 text-white border-blue-400'
+      };
+      const iconName = type === 'success' ? 'check-circle-2' : type === 'error' ? 'alert-circle' : 'info';
+
+      toast.className = `pointer-events-auto flex items-center gap-3 rounded-2xl border px-4 py-3.5 text-xs sm:text-sm font-semibold shadow-xl transition-all duration-300 translate-y-0 ${styles[type] || styles.info}`;
+      toast.innerHTML = `
+        <i data-lucide="${iconName}" class="w-5 h-5 shrink-0"></i>
+        <span class="flex-1">${escapeHtml(message)}</span>
+      `;
+      container.appendChild(toast);
+      if (window.lucide) window.lucide.createIcons();
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3400);
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    const jurusanColorClasses = {
+      teal: {
+        card: 'bg-gradient-to-br from-teal-500 via-teal-600 to-emerald-700 text-white shadow-teal-600/20',
+        iconBox: 'bg-white/20 text-white',
+        btnText: 'text-teal-800',
+        badge: 'bg-teal-100 text-teal-800'
+      },
+      blue: {
+        card: 'bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 text-white shadow-blue-600/20',
+        iconBox: 'bg-white/20 text-white',
+        btnText: 'text-blue-800',
+        badge: 'bg-blue-100 text-blue-800'
+      },
+      orange: {
+        card: 'bg-gradient-to-br from-amber-500 via-orange-500 to-rose-600 text-white shadow-orange-500/20',
+        iconBox: 'bg-white/20 text-white',
+        btnText: 'text-orange-800',
+        badge: 'bg-orange-100 text-orange-800'
+      },
+      purple: {
+        card: 'bg-gradient-to-br from-violet-500 via-purple-600 to-fuchsia-700 text-white shadow-purple-600/20',
+        iconBox: 'bg-white/20 text-white',
+        btnText: 'text-violet-800',
+        badge: 'bg-violet-100 text-violet-800'
+      }
+    };
+
+    // ========================================================================
+    // 4. SINKRONISASI DATA SUPABASE (SAAT IS_PREVIEW = FALSE)
+    // ========================================================================
+    async function loadAllData() {
+      if (IS_PREVIEW) {
+        renderPublicLanding();
+        return;
+      }
+
+      try {
+        // 1. Load Statistik
+        const { data: statData } = await supabase.from('profil_statistik').select('*').limit(1).maybeSingle();
+        if (statData) {
+          appState.statistik = statData;
+        }
+
+        // 2. Load Jurusan
+        const { data: jurData } = await supabase.from('jurusan').select('*').order('created_at', { ascending: true });
+        appState.jurusan = jurData || [];
+
+        // 2b. Load Data Guru Sekolah
+        const { data: guruData } = await supabase.from('guru_sekolah').select('*').order('created_at', { ascending: true });
+        appState.guru_sekolah = guruData || [];
+
+        // 3. Load Fasilitas
+        const { data: fasData } = await supabase.from('fasilitas').select('*').order('created_at', { ascending: true });
+        appState.fasilitas = fasData || [];
+
+        // 4. Load Testimoni & Galeri
+        const { data: tgData } = await supabase.from('testimoni_galeri').select('*').order('created_at', { ascending: false });
+        appState.testimoni_galeri = tgData || [];
+
+        // 4b. Load Postingan Kegiatan Sekolah
+        const { data: postData } = await supabase.from('postingan_kegiatan').select('*').order('created_at', { ascending: false });
+        appState.postingan_kegiatan = postData || [];
+
+        // 5. Cek Session Admin Supabase Auth
+        const { data: sessionRes } = await supabase.auth.getSession();
+        if (sessionRes?.session?.user) {
+          appState.currentUser = {
+            role: 'admin',
+            data: { email: sessionRes.session.user.email }
+          };
+          await loadPendaftarAdmin();
+          renderDashboard();
+          return;
+        }
+
+        // 6. Cek Session Siswa (LocalStorage khusus role siswa non-auth)
+        const savedSiswa = localStorage.getItem('smkn8wajo_siswa_session');
+        if (savedSiswa) {
+          const parsed = JSON.parse(savedSiswa);
+          const { data: freshSiswa } = await supabase
+            .from('pendaftar_spmb')
+            .select('*')
+            .eq('nisn', parsed.nisn)
+            .eq('password', parsed.password)
+            .maybeSingle();
+          if (freshSiswa) {
+            appState.currentUser = { role: 'siswa', data: freshSiswa };
+            renderDashboard();
+            return;
+          } else {
+            localStorage.removeItem('smkn8wajo_siswa_session');
+          }
+        }
+      } catch (err) {
+        showToast('Gagal memuat data dari server Supabase: ' + err.message, 'error');
+      }
+
+      renderPublicLanding();
+    }
+
+    async function loadPendaftarAdmin() {
+      if (IS_PREVIEW) return;
+      const { data, error } = await supabase
+        .from('pendaftar_spmb')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (!error) {
+        appState.pendaftar_spmb = data || [];
+      }
+    }
+
+    // ========================================================================
+    // 5. RENDER LANDING PAGE PUBLIK
+    // ========================================================================
+    function renderPublicLanding() {
+      // A. Render 5 Kartu Statistik
+      const s = appState.statistik;
+      const statsItems = [
+        { label: 'Kelulusan', value: s.tingkat_kelulusan, icon: 'graduation-cap', color: 'text-blue-600 bg-gradient-to-br from-blue-50 to-cyan-100' },
+        { label: 'Jurusan', value: s.jumlah_jurusan, icon: 'layers', color: 'text-teal-600 bg-gradient-to-br from-teal-50 to-emerald-100' },
+        { label: 'Rasio Guru', value: s.rasio_guru_siswa, icon: 'users', color: 'text-amber-600 bg-gradient-to-br from-amber-50 to-orange-100' },
+        { label: 'Status Sekolah', value: s.jumlah_ekskul, icon: 'award', color: 'text-emerald-600 bg-gradient-to-br from-emerald-50 to-teal-100' },
+        { label: 'Siswa Aktif', value: s.total_siswa, icon: 'user-check', color: 'text-violet-600 bg-gradient-to-br from-violet-50 to-purple-100' }
+      ];
+
+      document.getElementById('stats-grid').innerHTML = statsItems.map(item => `
+        <div class="card-spring bg-white rounded-2xl p-5 sm:p-6 shadow-md border border-slate-100/90 text-center flex flex-col items-center justify-center">
+          <div class="w-12 h-12 rounded-2xl ${item.color} flex items-center justify-center mb-3 shadow-inner">
+            <i data-lucide="${item.icon}" class="w-6 h-6"></i>
+          </div>
+          <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">${escapeHtml(item.value)}</div>
+          <div class="text-xs font-medium text-slate-500 mt-1">${escapeHtml(item.label)}</div>
+        </div>
+      `).join('');
+
+      // B. Render 4 Kartu Konsentrasi Keahlian (Warna-warni Teal/Blue/Orange/Purple)
+      const jurGrid = document.getElementById('jurusan-grid');
+      if (appState.jurusan.length === 0) {
+        jurGrid.innerHTML = `
+          <div class="col-span-full rounded-3xl border-2 border-dashed border-slate-200 p-10 text-center text-slate-500">
+            <i data-lucide="folder-open" class="w-10 h-10 mx-auto text-slate-400 mb-2"></i>
+            <p class="font-semibold text-sm">Belum ada data Konsentrasi Keahlian yang ditambahkan.</p>
+          </div>
+        `;
+      } else {
+        jurGrid.innerHTML = appState.jurusan.map(j => {
+          const theme = jurusanColorClasses[j.warna_tema] || jurusanColorClasses.blue;
+          return `
+            <div class="card-spring rounded-3xl p-6 shadow-lg flex flex-col justify-between ${theme.card}">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-12 h-12 rounded-2xl ${theme.iconBox} flex items-center justify-center backdrop-blur-sm">
+                    <i data-lucide="${escapeHtml(j.ikon || 'book-open')}" class="w-6 h-6"></i>
+                  </div>
+                  <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-extrabold tracking-wider uppercase">
+                    ${escapeHtml(j.singkatan)}
+                  </span>
+                </div>
+                <h3 class="font-display font-bold text-lg leading-snug mb-2">
+                  ${escapeHtml(j.nama_jurusan)}
+                </h3>
+                <p class="text-xs sm:text-sm text-white/90 leading-relaxed mb-6">
+                  ${escapeHtml(j.deskripsi)}
+                </p>
+              </div>
+              <div>
+                <button onclick="window.openJurusanDetail('${escapeHtml(j.id)}')" class="btn-anim btn-glow-white group inline-flex items-center gap-2 rounded-full bg-white ${theme.btnText} font-bold text-xs px-5 py-2.5 shadow">
+                  <span>Lihat Program</span>
+                  <i data-lucide="arrow-right" class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // B2. Render Kartu Kenalan Dengan Guru SMKN 8 Wajo (Foto, Nama, Mapel - Super Elegan)
+      const guruGrid = document.getElementById('guru-grid');
+      if (guruGrid) {
+        if (appState.guru_sekolah.length === 0) {
+          guruGrid.innerHTML = `
+            <div class="col-span-full rounded-3xl border-2 border-dashed border-slate-200 p-10 text-center text-slate-400 text-xs font-semibold">
+              Belum ada data guru yang ditambahkan.
+            </div>
+          `;
+        } else {
+          const badgeColors = [
+            'bg-blue-50 text-blue-700 border-blue-200/80',
+            'bg-teal-50 text-teal-700 border-teal-200/80',
+            'bg-amber-50 text-amber-800 border-amber-200/80',
+            'bg-indigo-50 text-indigo-700 border-indigo-200/80'
+          ];
+          const avatarGradients = [
+            'from-[#0F2942] via-[#1D4ED8] to-[#0284C7]',
+            'from-teal-600 via-emerald-600 to-cyan-600',
+            'from-amber-500 via-orange-500 to-rose-500',
+            'from-indigo-600 via-blue-600 to-violet-600'
+          ];
+          const photoOverlays = [
+            'from-blue-950/55 via-cyan-600/15 to-amber-400/20',
+            'from-teal-950/55 via-emerald-500/15 to-cyan-300/20',
+            'from-amber-950/50 via-orange-500/15 to-rose-400/20',
+            'from-indigo-950/55 via-violet-500/15 to-sky-400/20'
+          ];
+          const cardTints = [
+            'from-white via-sky-50/70 to-blue-50/80 border-sky-200/70',
+            'from-white via-teal-50/70 to-emerald-50/80 border-teal-200/70',
+            'from-white via-amber-50/70 to-orange-50/80 border-amber-200/70',
+            'from-white via-indigo-50/70 to-violet-50/80 border-indigo-200/70'
+          ];
+
+          guruGrid.innerHTML = appState.guru_sekolah.map((g, idx) => {
+            const initials = (g.nama_guru || 'G')
+              .replace(/^(apt\.|Dr\.|H\.|Hj\.)\s*/i, '')
+              .split(' ')
+              .slice(0, 2)
+              .map(w => w.charAt(0).toUpperCase())
+              .join('');
+            const badgeColor = badgeColors[idx % badgeColors.length];
+            const avatarGrad = avatarGradients[idx % avatarGradients.length];
+            const photoOverlay = photoOverlays[idx % photoOverlays.length];
+            const cardTint = cardTints[idx % cardTints.length];
+            const rawFoto = (g.foto_url || '').trim();
+            const hasPhoto = rawFoto.startsWith('http') || rawFoto.startsWith('data:image/');
+
+            return `
+              <div class="group bg-gradient-to-b ${cardTint} rounded-3xl p-2.5 overflow-hidden shadow-md border hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col">
+                <div class="relative aspect-[4/4.2] w-full rounded-2xl overflow-hidden bg-gradient-to-br ${avatarGrad} shadow-inner">
+                  ${hasPhoto
+                    ? `<img src="${escapeHtml(rawFoto)}" alt="${escapeHtml(g.nama_guru)}"
+                            loading="lazy" decoding="async"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                            class="w-full h-full object-cover object-top saturate-[1.12] contrast-[1.03] group-hover:scale-105 group-hover:saturate-[1.22] transition-all duration-500" />
+                       <div style="display:none" class="w-full h-full bg-gradient-to-br ${avatarGrad} text-white font-display font-extrabold text-3xl sm:text-4xl items-center justify-center tracking-wider">
+                         ${escapeHtml(initials)}
+                       </div>
+                       <div class="absolute inset-0 bg-gradient-to-t ${photoOverlay} mix-blend-multiply opacity-75 group-hover:opacity-45 transition-opacity duration-500 pointer-events-none"></div>
+                       <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.35),transparent_55%)] pointer-events-none"></div>`
+                    : `<div class="w-full h-full flex flex-col items-center justify-center text-white relative">
+                         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.28),transparent_65%)]"></div>
+                         <span class="font-display font-extrabold text-3xl sm:text-4xl tracking-wider drop-shadow">${escapeHtml(initials)}</span>
+                       </div>`
+                  }
+                  <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-amber-400 opacity-85"></div>
+                </div>
+
+                <div class="pt-4 pb-2.5 px-2 text-center flex-1 flex flex-col items-center justify-center">
+                  <h3 class="font-display font-extrabold text-sm sm:text-base text-slate-900 leading-snug line-clamp-2">
+                    ${escapeHtml(g.nama_guru)}
+                  </h3>
+                  <span class="mt-2 inline-block rounded-full border ${badgeColor} bg-white/90 px-3 py-1 text-[11px] font-bold tracking-wide max-w-full truncate shadow-2xs">
+                    ${escapeHtml(g.jabatan_mapel)}
+                  </span>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      // C. Render 3 Kartu Fasilitas & Bengkel Praktik
+      const fasGrid = document.getElementById('fasilitas-grid');
+      if (fasGrid) {
+        if (appState.fasilitas.length === 0) {
+          fasGrid.innerHTML = `
+            <div class="col-span-full rounded-3xl border-2 border-dashed border-slate-200 p-10 text-center text-slate-400 text-xs font-semibold">
+              Belum ada data fasilitas yang ditambahkan.
+            </div>
+          `;
+        } else {
+          fasGrid.innerHTML = appState.fasilitas.map(f => `
+            <div class="card-spring bg-white rounded-3xl overflow-hidden shadow-md border border-slate-100 flex flex-col">
+              <div class="h-48 w-full overflow-hidden bg-slate-100">
+                <img src="${escapeHtml(f.foto_url)}" alt="${escapeHtml(f.nama_fasilitas)}"
+                     loading="lazy"
+                     onerror="this.src='https://placehold.co/800x500/0F2942/FFFFFF?text=Fasilitas+SMKN+8+Wajo'"
+                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              </div>
+              <div class="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 class="font-display font-extrabold text-lg text-slate-900 mb-2">${escapeHtml(f.nama_fasilitas)}</h3>
+                  <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">${escapeHtml(f.deskripsi)}</p>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      // D. Render Jejak Alumni (Elegan seperti Section Guru: Foto/Avatar, Nama, Tempat Kuliah/Kerja)
+      const testimoniList = appState.testimoni_galeri.filter(x => x.tipe === 'testimoni');
+      const galeriList = appState.testimoni_galeri.filter(x => x.tipe === 'galeri');
+
+      const testGrid = document.getElementById('testimoni-grid');
+      if (testimoniList.length === 0) {
+        testGrid.innerHTML = `
+          <div class="col-span-full rounded-3xl border-2 border-dashed border-violet-200 bg-white/70 p-8 text-center text-slate-400 text-xs font-semibold">
+            Belum ada data jejak alumni yang dipublikasikan.
+          </div>
+        `;
+      } else {
+        const alumniBadges = [
+          'bg-violet-50 text-violet-700 border-violet-200/80',
+          'bg-blue-50 text-blue-700 border-blue-200/80',
+          'bg-teal-50 text-teal-700 border-teal-200/80',
+          'bg-amber-50 text-amber-800 border-amber-200/80'
+        ];
+        const alumniGrads = [
+          'from-violet-600 via-purple-600 to-indigo-700',
+          'from-[#0F2942] via-[#1D4ED8] to-[#0284C7]',
+          'from-teal-600 via-emerald-600 to-cyan-600',
+          'from-amber-500 via-orange-500 to-rose-500'
+        ];
+        const alumniOverlays = [
+          'from-violet-950/55 via-purple-500/15 to-pink-400/20',
+          'from-blue-950/55 via-cyan-600/15 to-amber-400/20',
+          'from-teal-950/55 via-emerald-500/15 to-cyan-300/20',
+          'from-amber-950/50 via-orange-500/15 to-rose-400/20'
+        ];
+        const alumniTints = [
+          'from-white via-violet-50/70 to-purple-50/80 border-violet-200/70',
+          'from-white via-sky-50/70 to-blue-50/80 border-sky-200/70',
+          'from-white via-teal-50/70 to-emerald-50/80 border-teal-200/70',
+          'from-white via-amber-50/70 to-orange-50/80 border-amber-200/70'
+        ];
+
+        testGrid.innerHTML = testimoniList.map((t, idx) => {
+          const initials = (t.judul_atau_nama || 'A')
+            .replace(/^(apt\.|Dr\.|H\.|Hj\.)\s*/i, '')
+            .split(' ')
+            .slice(0, 2)
+            .map(w => w.charAt(0).toUpperCase())
+            .join('');
+          const bColor = alumniBadges[idx % alumniBadges.length];
+          const aGrad = alumniGrads[idx % alumniGrads.length];
+          const pOverlay = alumniOverlays[idx % alumniOverlays.length];
+          const cTint = alumniTints[idx % alumniTints.length];
+          const rawFoto = (t.isi_atau_foto_url || '').trim();
+          const hasPhoto = rawFoto.startsWith('http') || rawFoto.startsWith('data:image/');
+
+          return `
+            <div class="group bg-gradient-to-b ${cTint} rounded-3xl p-2.5 overflow-hidden shadow-md border hover:-translate-y-2 hover:shadow-xl transition-all duration-300 flex flex-col">
+              <div class="relative aspect-[4/4.2] w-full rounded-2xl overflow-hidden bg-gradient-to-br ${aGrad} shadow-inner">
+                ${hasPhoto
+                  ? `<img src="${escapeHtml(rawFoto)}" alt="${escapeHtml(t.judul_atau_nama)}"
+                          loading="lazy" decoding="async"
+                          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                          class="w-full h-full object-cover object-top saturate-[1.12] contrast-[1.03] group-hover:scale-105 group-hover:saturate-[1.22] transition-all duration-500" />
+                     <div style="display:none" class="w-full h-full bg-gradient-to-br ${aGrad} text-white font-display font-extrabold text-3xl sm:text-4xl items-center justify-center tracking-wider">
+                       ${escapeHtml(initials)}
+                     </div>
+                     <div class="absolute inset-0 bg-gradient-to-t ${pOverlay} mix-blend-multiply opacity-75 group-hover:opacity-45 transition-opacity duration-500 pointer-events-none"></div>
+                     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.35),transparent_55%)] pointer-events-none"></div>`
+                  : `<div class="w-full h-full flex flex-col items-center justify-center text-white relative">
+                       <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.28),transparent_65%)]"></div>
+                       <span class="font-display font-extrabold text-3xl sm:text-4xl tracking-wider drop-shadow">${escapeHtml(initials)}</span>
+                     </div>`
+                }
+                <div class="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-violet-400 via-pink-500 to-amber-400 opacity-85"></div>
+              </div>
+
+              <div class="pt-4 pb-2.5 px-2 text-center flex-1 flex flex-col items-center justify-center">
+                <h3 class="font-display font-extrabold text-sm sm:text-base text-slate-900 leading-snug line-clamp-2">
+                  ${escapeHtml(t.judul_atau_nama)}
+                </h3>
+                <span class="mt-2 inline-block rounded-full border ${bColor} bg-white/90 px-3 py-1 text-[11px] font-bold tracking-wide max-w-full truncate shadow-2xs">
+                  ${escapeHtml(t.peran_atau_keterangan)}
+                </span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // D2. Render Postingan Kegiatan SMKN 8 Wajo
+      const postGrid = document.getElementById('postingan-grid');
+      if (postGrid) {
+        if (appState.postingan_kegiatan.length === 0) {
+          postGrid.innerHTML = `
+            <div class="col-span-full rounded-3xl border-2 border-dashed border-blue-200 bg-white/70 p-10 text-center text-slate-400 text-xs font-semibold">
+              Belum ada postingan kegiatan sekolah yang dipublikasikan.
+            </div>
+          `;
+        } else {
+          postGrid.innerHTML = appState.postingan_kegiatan.map(p => {
+            const hasFoto = (p.foto_url || '').trim().startsWith('http') || (p.foto_url || '').trim().startsWith('data:image/');
+            return `
+              <article class="card-spring bg-white rounded-3xl overflow-hidden shadow-md border border-sky-100 flex flex-col justify-between">
+                <div>
+                  <div class="relative h-52 w-full overflow-hidden bg-gradient-to-br from-[#0F2942] to-[#0284C7]">
+                    ${hasFoto
+                      ? `<img src="${escapeHtml(p.foto_url)}" alt="${escapeHtml(p.judul)}" loading="lazy"
+                              onerror="this.src='https://placehold.co/800x450/0F2942/FFFFFF?text=Kegiatan+SMKN+8+Wajo'"
+                              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />`
+                      : `<div class="w-full h-full flex items-center justify-center text-white/80"><i data-lucide="newspaper" class="w-12 h-12"></i></div>`
+                    }
+                    <div class="absolute top-3.5 left-3.5 flex items-center gap-2">
+                      <span class="rounded-full bg-[#0F2942]/90 backdrop-blur-md text-amber-300 font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 shadow">
+                        ${escapeHtml(p.kategori || 'Kegiatan')}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="p-6">
+                    <div class="flex items-center gap-1.5 text-[11px] font-bold text-slate-400 mb-2">
+                      <i data-lucide="calendar" class="w-3.5 h-3.5 text-blue-500"></i>
+                      <span>${escapeHtml(p.tanggal || 'Terbaru')}</span>
+                    </div>
+                    <h3 class="font-display font-extrabold text-base sm:text-lg text-slate-900 leading-snug line-clamp-2 mb-2.5">
+                      ${escapeHtml(p.judul)}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                      ${escapeHtml(p.ringkasan)}
+                    </p>
+                  </div>
+                </div>
+                <div class="px-6 pb-6">
+                  <button onclick="window.openPostinganDetail('${escapeHtml(p.id)}')" class="btn-anim btn-glow-blue group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-bold text-xs px-5 py-2.5 shadow">
+                    <span>Baca Selengkapnya</span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-amber-300 transition-transform duration-300 group-hover:translate-x-1.5"></i>
+                  </button>
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+      }
+
+      const galGrid = document.getElementById('galeri-grid');
+      if (galeriList.length === 0) {
+        galGrid.innerHTML = `
+          <div class="col-span-full rounded-3xl overflow-hidden border border-pink-100 bg-gradient-to-br from-pink-50/60 via-white to-amber-50/60 p-4 shadow-sm">
+            <div class="rounded-2xl overflow-hidden bg-white border border-slate-200/80 shadow-inner">
+              <iframe src="https://www.instagram.com/smkn8_wajo/embed"
+                      class="w-full h-[430px] border-0"
+                      scrolling="no"
+                      allowtransparency="true"
+                      loading="lazy"
+                      title="Instagram Resmi SMKN 8 Wajo"></iframe>
+            </div>
+          </div>
+        `;
+      } else {
+        galGrid.innerHTML = galeriList.map(g => {
+          const rawUrl = (g.isi_atau_foto_url || '').trim();
+          const isInstagram = rawUrl.includes('instagram.com');
+
+          if (isInstagram) {
+            // Normalisasi URL Instagram agar selalu mendukung /embed
+            let cleanIg = rawUrl.split('?')[0].replace(/\/$/, '');
+            const embedSrc = cleanIg.endsWith('/embed') ? cleanIg : `${cleanIg}/embed`;
+            return `
+              <div class="card-spring rounded-3xl overflow-hidden bg-white border border-pink-100 shadow-md flex flex-col">
+                <div class="w-full h-[380px] bg-slate-50 overflow-hidden">
+                  <iframe src="${escapeHtml(embedSrc)}"
+                          class="w-full h-full border-0"
+                          scrolling="no"
+                          allowtransparency="true"
+                          loading="lazy"
+                          title="${escapeHtml(g.judul_atau_nama)}"></iframe>
+                </div>
+                <div class="px-4 py-3 bg-gradient-to-r from-slate-50 to-pink-50/40 border-t border-slate-100 flex items-center justify-between gap-2">
+                  <div class="min-w-0">
+                    <div class="font-display font-bold text-xs text-slate-900 truncate">${escapeHtml(g.judul_atau_nama)}</div>
+                    <div class="text-[11px] text-slate-500 truncate">${escapeHtml(g.peran_atau_keterangan)}</div>
+                  </div>
+                  <a href="${escapeHtml(cleanIg)}" target="_blank" rel="noopener noreferrer" class="shrink-0 inline-flex items-center gap-1 text-[11px] font-extrabold text-pink-600 hover:text-pink-700">
+                    <span>Buka IG</span>
+                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                  </a>
+                </div>
+              </div>
+            `;
+          }
+
+          return `
+            <div class="group relative rounded-3xl overflow-hidden aspect-square bg-slate-200 shadow-md border border-slate-100">
+              <img src="${escapeHtml(rawUrl)}" alt="${escapeHtml(g.judul_atau_nama)}"
+                   onerror="this.src='https://placehold.co/600x600/0F2942/FFFFFF?text=SMKN+8+Wajo'"
+                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 flex flex-col justify-end">
+                <div class="text-white font-bold text-xs leading-tight">${escapeHtml(g.judul_atau_nama)}</div>
+                <div class="text-amber-300 text-[11px] mt-0.5">${escapeHtml(g.peran_atau_keterangan)}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // E. Isi Pilihan Jurusan di Form SPMB Publik
+      const selectJur = document.getElementById('spmb-jurusan');
+      if (appState.jurusan.length > 0) {
+        selectJur.innerHTML = appState.jurusan
+          .map(j => `<option value="${escapeHtml(j.nama_jurusan)}">${escapeHtml(j.singkatan)} — ${escapeHtml(j.nama_jurusan)}</option>`)
+          .join('');
+      } else {
+        selectJur.innerHTML = `<option value="Umum / Belum Ditentukan">Umum / Belum Ditentukan</option>`;
+      }
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    // ========================================================================
+    // 6. MODAL CONTROLLERS & DETAIL JURUSAN
+    // ========================================================================
+    window.openLoginModal = function () {
+      document.getElementById('login-modal').classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    window.closeLoginModal = function () {
+      document.getElementById('login-modal').classList.add('hidden');
+    };
+
+    window.openSpmbModal = function () {
+      document.getElementById('spmb-modal').classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    window.closeSpmbModal = function () {
+      document.getElementById('spmb-modal').classList.add('hidden');
+    };
+
+    window.openJurusanDetail = function (id) {
+      const jur = appState.jurusan.find(j => j.id === id);
+      if (!jur) return;
+      const theme = jurusanColorClasses[jur.warna_tema] || jurusanColorClasses.blue;
+      document.getElementById('jurusan-detail-body').innerHTML = `
+        <span class="inline-block rounded-full ${theme.badge} text-xs font-extrabold uppercase px-3 py-1 mb-3">
+          ${escapeHtml(jur.singkatan)}
+        </span>
+        <h3 class="font-display font-extrabold text-2xl text-slate-900 mb-3">${escapeHtml(jur.nama_jurusan)}</h3>
+        <p class="text-sm text-slate-600 leading-relaxed mb-6">${escapeHtml(jur.deskripsi)}</p>
+        <div class="bg-slate-50 rounded-2xl p-4 mb-6 border border-slate-100">
+          <div class="text-xs font-bold text-slate-800 uppercase mb-2">Keunggulan & Prospek Lulusan:</div>
+          <ul class="text-xs text-slate-600 space-y-1.5 list-disc pl-4">
+            <li>Sertifikasi Kompetensi Keahlian (BNSP / Mitra Industri)</li>
+            <li>Praktik Kerja Lapangan (PKL) di Perusahaan Mitra Sulawesi</li>
+            <li>Peluang kerja langsung, berwirausaha mandiri, atau lanjut kuliah</li>
+          </ul>
+        </div>
+        <button onclick="document.getElementById('jurusan-detail-modal').classList.add('hidden'); window.openSpmbModal();"
+                class="btn-anim btn-glow-amber group w-full inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 text-slate-950 font-extrabold text-sm py-3.5 shadow">
+          <span>Daftar ke Jurusan Ini</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1.5"></i>
+        </button>
+      `;
+      document.getElementById('jurusan-detail-modal').classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    window.openPostinganDetail = function (id) {
+      const post = appState.postingan_kegiatan.find(p => p.id === id);
+      if (!post) return;
+      const hasFoto = (post.foto_url || '').trim().startsWith('http') || (post.foto_url || '').trim().startsWith('data:image/');
+      document.getElementById('postingan-detail-body').innerHTML = `
+        ${hasFoto
+          ? `<div class="h-60 sm:h-72 w-full bg-slate-900 overflow-hidden">
+               <img src="${escapeHtml(post.foto_url)}" alt="${escapeHtml(post.judul)}" class="w-full h-full object-cover" onerror="this.remove()" />
+             </div>`
+          : ''
+        }
+        <div class="p-6 sm:p-8">
+          <div class="flex flex-wrap items-center gap-2.5 mb-3">
+            <span class="rounded-full bg-blue-50 text-blue-700 text-[11px] font-extrabold uppercase px-3 py-1">${escapeHtml(post.kategori || 'Kegiatan')}</span>
+            <span class="text-xs font-semibold text-slate-400">${escapeHtml(post.tanggal || '')}</span>
+          </div>
+          <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 leading-snug mb-4">${escapeHtml(post.judul)}</h3>
+          <p class="text-sm text-slate-600 leading-relaxed whitespace-pre-line">${escapeHtml(post.ringkasan)}</p>
+        </div>
+      `;
+      document.getElementById('postingan-detail-modal').classList.remove('hidden');
+      if (window.lucide) window.lucide.createIcons();
+    };
+
+    // ========================================================================
+    // 7. AUTENTIKASI 1 PINTU (UNIFIED LOGIN) & PENDAFTARAN SPMB PUBLIK
+    // ========================================================================
+    window.quickLogin = function (role) {
+      if (!IS_PREVIEW) return;
+      if (role === 'admin') {
+        appState.currentUser = {
+          role: 'admin',
+          data: { email: 'operator@smkn8wajo.sch.id' }
+        };
+        showToast('Berhasil masuk sebagai Admin (Mode Preview)', 'success');
+      } else {
+        const sampleSiswa = appState.pendaftar_spmb[0] || {
+          id: 'spmb-demo',
+          nisn: '0081234567',
+          password: '1234',
+          nama_lengkap: 'Andi Muh. Faiz',
+          asal_sekolah: 'SMPN 1 Sengkang',
+          pilihan_jurusan: 'Teknologi Farmasi',
+          no_hp: '085242110099',
+          status_seleksi: 'Diterima',
+          created_at: new Date().toISOString()
+        };
+        appState.currentUser = { role: 'siswa', data: sampleSiswa };
+        showToast(`Selamat datang, ${sampleSiswa.nama_lengkap}!`, 'success');
+      }
+      window.closeLoginModal();
+      renderDashboard();
+    };
+
+    window.submitUnifiedLogin = async function (e) {
+      e.preventDefault();
+      const identifier = document.getElementById('unified-login-id').value.trim();
+      const password = document.getElementById('unified-login-pass').value;
+      const isEmailAdmin = identifier.includes('@');
+
+      // Jalur 1: Deteksi Email -> Login Admin Sekolah
+      if (isEmailAdmin) {
+        if (IS_PREVIEW) {
+          appState.currentUser = { role: 'admin', data: { email: identifier } };
+          document.getElementById('form-unified-login').reset();
+          window.closeLoginModal();
+          showToast('Login Admin berhasil (Mode Preview)', 'success');
+          renderDashboard();
+          return;
+        }
+
+        const { data, error } = await supabase.auth.signInWithPassword({ email: identifier, password });
+        if (error) {
+          showToast('Login Admin gagal: ' + error.message, 'error');
+          return;
+        }
+
+        appState.currentUser = { role: 'admin', data: { email: data.user.email } };
+        await loadPendaftarAdmin();
+        document.getElementById('form-unified-login').reset();
+        window.closeLoginModal();
+        showToast('Selamat datang di Panel Operator UPT SMKN 8 WAJO!', 'success');
+        renderDashboard();
+        return;
+      }
+
+      // Jalur 2: Deteksi NISN -> Login Calon Siswa SPMB
+      if (IS_PREVIEW) {
+        const found = appState.pendaftar_spmb.find(s => s.nisn === identifier && s.password === password);
+        if (!found) {
+          showToast('NISN atau Kata Sandi tidak cocok. Coba NISN: 0081234567, Sandi: 1234 atau gunakan Demo.', 'error');
+          return;
+        }
+        appState.currentUser = { role: 'siswa', data: found };
+        document.getElementById('form-unified-login').reset();
+        window.closeLoginModal();
+        showToast(`Selamat datang kembali, ${found.nama_lengkap}!`, 'success');
+        renderDashboard();
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('pendaftar_spmb')
+        .select('*')
+        .eq('nisn', identifier)
+        .eq('password', password)
+        .maybeSingle();
+
+      if (error || !data) {
+        showToast('NISN atau Kata Sandi salah. Silakan periksa kembali.', 'error');
+        return;
+      }
+
+      localStorage.setItem('smkn8wajo_siswa_session', JSON.stringify({ nisn: data.nisn, password: data.password }));
+      appState.currentUser = { role: 'siswa', data };
+      document.getElementById('form-unified-login').reset();
+      window.closeLoginModal();
+      showToast(`Login berhasil! Halo, ${data.nama_lengkap}`, 'success');
+      renderDashboard();
+    };
+
+    window.submitPublicSpmb = async function (e) {
+      e.preventDefault();
+      const payload = {
+        nisn: document.getElementById('spmb-nisn').value.trim(),
+        password: document.getElementById('spmb-password').value,
+        nama_lengkap: document.getElementById('spmb-nama').value.trim(),
+        asal_sekolah: document.getElementById('spmb-asal').value.trim(),
+        no_hp: document.getElementById('spmb-hp').value.trim(),
+        pilihan_jurusan: document.getElementById('spmb-jurusan').value,
+        status_seleksi: 'Menunggu Verifikasi'
+      };
+
+      if (IS_PREVIEW) {
+        if (appState.pendaftar_spmb.some(x => x.nisn === payload.nisn)) {
+          showToast('NISN tersebut sudah terdaftar dalam sistem.', 'error');
+          return;
+        }
+        const newRow = {
+          id: 'spmb-' + Date.now(),
+          ...payload,
+          created_at: new Date().toISOString()
+        };
+        appState.pendaftar_spmb.unshift(newRow);
+        appState.currentUser = { role: 'siswa', data: newRow };
+        document.getElementById('form-public-spmb').reset();
+        window.closeSpmbModal();
+        showToast('Pendaftaran SPMB berhasil! Anda otomatis masuk ke portal siswa.', 'success');
+        renderDashboard();
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('pendaftar_spmb')
+        .insert([payload])
+        .select()
+        .single();
+
+      if (error) {
+        showToast('Pendaftaran gagal: ' + error.message, 'error');
+        return;
+      }
+
+      localStorage.setItem('smkn8wajo_siswa_session', JSON.stringify({ nisn: data.nisn, password: data.password }));
+      appState.currentUser = { role: 'siswa', data };
+      document.getElementById('form-public-spmb').reset();
+      window.closeSpmbModal();
+      showToast('Pendaftaran berhasil tersimpan! Membuka Kartu Bukti SPMB...', 'success');
+      renderDashboard();
+    };
+
+    window.handleLogout = async function () {
+      if (!IS_PREVIEW && appState.currentUser?.role === 'admin' && supabase) {
+        await supabase.auth.signOut();
+      }
+      localStorage.removeItem('smkn8wajo_siswa_session');
+      appState.currentUser = null;
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('public-view').classList.remove('hidden');
+      renderPublicLanding();
+      showToast('Anda telah keluar dari portal.', 'info');
+    };
+
+    window.switchToLanding = function () {
+      document.getElementById('dashboard-view').classList.add('hidden');
+      document.getElementById('public-view').classList.remove('hidden');
+      renderPublicLanding();
+    };
+
+    // ========================================================================
+    // 8. PORTAL DASHBOARD (SIDEBAR DESKTOP + BOTTOM NAV MOBILE)
+    // ========================================================================
+    function renderDashboard() {
+      if (!appState.currentUser) return;
+
+      document.getElementById('public-view').classList.add('hidden');
+      document.getElementById('dashboard-view').classList.remove('hidden');
+
+      const isAdmin = appState.currentUser.role === 'admin';
+      document.getElementById('sidebar-role-badge').textContent = isAdmin ? 'Operator Admin' : 'Siswa SPMB';
+      document.getElementById('dashboard-user-subtitle').textContent = isAdmin
+        ? appState.currentUser.data.email
+        : `${appState.currentUser.data.nisn} • ${appState.currentUser.data.nama_lengkap}`;
+
+      const adminMenus = [
+        { id: 'statistik', label: 'Statistik', short: 'Statistik', icon: 'bar-chart-3' },
+        { id: 'jurusan_fasilitas', label: 'Jurusan & Fasilitas', short: 'Jurusan', icon: 'layers' },
+        { id: 'guru', label: 'Data Guru', short: 'Guru', icon: 'graduation-cap' },
+        { id: 'postingan', label: 'Postingan Kegiatan', short: 'Postingan', icon: 'newspaper' },
+        { id: 'spmb', label: 'Pendaftar SPMB', short: 'SPMB', icon: 'users' },
+        { id: 'galeri_testimoni', label: 'Alumni & Galeri', short: 'Alumni', icon: 'award' }
+      ];
+
+      const siswaMenus = [
+        { id: 'kartu', label: 'Kartu SPMB', short: 'Kartu', icon: 'id-card' },
+        { id: 'info_jurusan', label: 'Info Sekolah', short: 'Info', icon: 'megaphone' }
+      ];
+
+      const menus = isAdmin ? adminMenus : siswaMenus;
+      const activeTab = isAdmin ? appState.activeAdminTab : appState.activeSiswaTab;
+
+      // Render Desktop Sidebar Nav dengan Button Animation
+      document.getElementById('desktop-sidebar-nav').innerHTML = menus.map(m => {
+        const active = m.id === activeTab;
+        return `
+          <button onclick="window.setDashboardTab('${m.id}')"
+                  class="btn-anim w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs sm:text-sm font-extrabold transition-all ${
+                    active
+                      ? 'bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white shadow-lg shadow-blue-900/20'
+                      : 'bg-slate-50/80 text-slate-700 hover:bg-sky-50 hover:text-blue-700 border border-slate-200/60'
+                  }">
+            <i data-lucide="${m.icon}" class="w-4 h-4 ${active ? 'text-amber-300' : 'text-blue-600'}"></i>
+            <span>${m.label}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Render Mobile Floating Bottom Nav dengan Button Animation
+      document.getElementById('mobile-bottom-nav').innerHTML = menus.map(m => {
+        const active = m.id === activeTab;
+        return `
+          <button onclick="window.setDashboardTab('${m.id}')"
+                  class="btn-anim flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all ${
+                    active ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-navy-900 font-extrabold shadow-md' : 'text-slate-300 hover:text-white'
+                  }">
+            <i data-lucide="${m.icon}" class="w-4 h-4 mb-0.5"></i>
+            <span class="text-[10px] tracking-tight">${m.short}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Render Active Tab Content
+      const currentMenu = menus.find(m => m.id === activeTab) || menus[0];
+      document.getElementById('dashboard-header-title').textContent = currentMenu.label;
+
+      if (isAdmin) {
+        if (activeTab === 'statistik') renderAdminStatistik();
+        else if (activeTab === 'jurusan_fasilitas') renderAdminJurusanFasilitas();
+        else if (activeTab === 'guru') renderAdminGuru();
+        else if (activeTab === 'postingan') renderAdminPostingan();
+        else if (activeTab === 'spmb') renderAdminSpmb();
+        else if (activeTab === 'galeri_testimoni') renderAdminGaleriTestimoni();
+      } else {
+        if (activeTab === 'kartu') renderSiswaKartu();
+        else renderSiswaInfo();
+      }
+
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    window.setDashboardTab = function (tabId) {
+      if (appState.currentUser?.role === 'admin') {
+        appState.activeAdminTab = tabId;
+      } else {
+        appState.activeSiswaTab = tabId;
+      }
+      renderDashboard();
+    };
+
+    // ========================================================================
+    // 9. ADMIN TAB A: RINGKASAN & EDIT STATISTIK SEKOLAH (MINIMALIS & ELEGAN)
+    // ========================================================================
+    function renderAdminStatistik() {
+      const s = appState.statistik;
+      const totalPendaftar = appState.pendaftar_spmb.length;
+      const totalDiterima = appState.pendaftar_spmb.filter(p => p.status_seleksi === 'Diterima').length;
+
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div class="card-spring bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-sky-100 flex items-center justify-between">
+            <div>
+              <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Pendaftar SPMB</div>
+              <div class="font-display font-extrabold text-3xl text-slate-900 mt-1">${totalPendaftar}</div>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-100 text-blue-600 flex items-center justify-center">
+              <i data-lucide="users" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="card-spring bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-emerald-100 flex items-center justify-between">
+            <div>
+              <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Diterima</div>
+              <div class="font-display font-extrabold text-3xl text-emerald-600 mt-1">${totalDiterima}</div>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-100 text-emerald-600 flex items-center justify-center">
+              <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+            </div>
+          </div>
+          <div class="card-spring bg-white/95 backdrop-blur-md rounded-3xl p-5 shadow-md border border-amber-100 flex items-center justify-between">
+            <div>
+              <div class="text-[11px] font-extrabold text-slate-400 uppercase tracking-wider">Guru Aktif</div>
+              <div class="font-display font-extrabold text-3xl text-amber-600 mt-1">${appState.guru_sekolah.length}</div>
+            </div>
+            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-100 text-amber-600 flex items-center justify-center">
+              <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-7 shadow-md border border-slate-100">
+          <div class="flex items-center justify-between mb-5">
+            <h2 class="font-display font-extrabold text-lg text-slate-900">Statistik Beranda</h2>
+            <span class="rounded-full bg-blue-50 text-blue-700 text-[11px] font-bold px-3 py-1">5 Kartu Utama</span>
+          </div>
+
+          <form onsubmit="window.saveStatistik(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Kelulusan</label>
+              <input type="text" id="edit-stat-kelulusan" required value="${escapeHtml(s.tingkat_kelulusan)}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-2.5 text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Jumlah Jurusan</label>
+              <input type="text" id="edit-stat-jurusan" required value="${escapeHtml(s.jumlah_jurusan)}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-2.5 text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Rasio Guru</label>
+              <input type="text" id="edit-stat-rasio" required value="${escapeHtml(s.rasio_guru_siswa)}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-2.5 text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Akreditasi</label>
+              <input type="text" id="edit-stat-ekskul" required value="${escapeHtml(s.jumlah_ekskul)}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-2.5 text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Siswa Aktif</label>
+              <input type="text" id="edit-stat-siswa" required value="${escapeHtml(s.total_siswa)}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-2.5 text-sm font-bold text-slate-800 focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div class="flex items-end">
+              <button type="submit" class="btn-anim btn-glow-blue group w-full inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs sm:text-sm py-3 px-6 shadow-lg">
+                <span>Simpan</span>
+                <i data-lucide="check" class="w-4 h-4 text-amber-300 transition-transform group-hover:translate-x-1"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      `;
+    }
+
+    window.saveStatistik = async function (e) {
+      e.preventDefault();
+      const updated = {
+        tingkat_kelulusan: document.getElementById('edit-stat-kelulusan').value.trim(),
+        jumlah_jurusan: document.getElementById('edit-stat-jurusan').value.trim(),
+        rasio_guru_siswa: document.getElementById('edit-stat-rasio').value.trim(),
+        jumlah_ekskul: document.getElementById('edit-stat-ekskul').value.trim(),
+        total_siswa: document.getElementById('edit-stat-siswa').value.trim(),
+        updated_at: new Date().toISOString()
+      };
+
+      if (IS_PREVIEW) {
+        appState.statistik = { ...appState.statistik, ...updated };
+        showToast('Statistik sekolah berhasil diperbarui!', 'success');
+        return;
+      }
+
+      if (appState.statistik.id) {
+        const { data, error } = await supabase
+          .from('profil_statistik')
+          .update(updated)
+          .eq('id', appState.statistik.id)
+          .select()
+          .single();
+        if (error) return showToast('Gagal menyimpan statistik: ' + error.message, 'error');
+        appState.statistik = data;
+      } else {
+        const { data, error } = await supabase
+          .from('profil_statistik')
+          .insert([updated])
+          .select()
+          .single();
+        if (error) return showToast('Gagal menambah statistik: ' + error.message, 'error');
+        appState.statistik = data;
+      }
+      showToast('Statistik sekolah tersimpan ke Supabase!', 'success');
+    };
+
+    // ========================================================================
+    // 10. ADMIN TAB B: MANAJEMEN JURUSAN & FASILITAS
+    // ========================================================================
+    function renderAdminJurusanFasilitas() {
+      const editJur = appState.editingJurusanId
+        ? appState.jurusan.find(j => j.id === appState.editingJurusanId)
+        : null;
+      const editFas = appState.editingFasilitasId
+        ? appState.fasilitas.find(f => f.id === appState.editingFasilitasId)
+        : null;
+
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Kolom Kiri: Manajemen Jurusan -->
+          <div class="space-y-4">
+            <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-md border border-slate-100">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display font-extrabold text-base text-slate-900">
+                  ${editJur ? 'Edit Jurusan' : 'Tambah Jurusan'}
+                </h3>
+                <span class="rounded-full bg-teal-50 text-teal-700 text-[10px] font-extrabold uppercase px-2.5 py-0.5">Kejuruan</span>
+              </div>
+
+              <form onsubmit="window.saveJurusan(event)" class="space-y-3.5">
+                <div class="grid grid-cols-2 gap-3">
+                  <input type="text" id="jur-singkatan" required placeholder="Singkatan (FARMASI)" value="${editJur ? escapeHtml(editJur.singkatan) : ''}" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm font-bold uppercase focus:bg-white focus:border-blue-600 outline-none" />
+                  <select id="jur-warna" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none">
+                    <option value="teal" ${editJur?.warna_tema === 'teal' ? 'selected' : ''}>Tema Teal</option>
+                    <option value="blue" ${editJur?.warna_tema === 'blue' ? 'selected' : ''}>Tema Biru</option>
+                    <option value="orange" ${editJur?.warna_tema === 'orange' ? 'selected' : ''}>Tema Oranye</option>
+                    <option value="purple" ${editJur?.warna_tema === 'purple' ? 'selected' : ''}>Tema Ungu</option>
+                  </select>
+                </div>
+                <input type="text" id="jur-nama" required placeholder="Nama Lengkap Jurusan" value="${editJur ? escapeHtml(editJur.nama_jurusan) : ''}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+                <input type="text" id="jur-ikon" placeholder="Nama Ikon Lucide (flask-conical / fish)" value="${editJur ? escapeHtml(editJur.ikon) : 'book-open'}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+                <textarea id="jur-deskripsi" required rows="2" placeholder="Deskripsi singkat kompetensi..." class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none">${editJur ? escapeHtml(editJur.deskripsi) : ''}</textarea>
+
+                <div class="flex gap-2">
+                  <button type="submit" class="btn-anim btn-glow-blue flex-1 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs py-3 px-5 shadow">
+                    ${editJur ? 'Simpan' : 'Tambahkan'}
+                  </button>
+                  ${editJur ? `<button type="button" onclick="window.cancelEditJurusan()" class="btn-anim rounded-full bg-slate-200 text-slate-700 font-bold text-xs py-3 px-4">Batal</button>` : ''}
+                </div>
+              </form>
+            </div>
+
+            <div class="space-y-2.5">
+              ${appState.jurusan.map(j => `
+                <div class="card-spring bg-white/95 rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-3">
+                  <div class="min-w-0">
+                    <span class="inline-block text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700">${escapeHtml(j.singkatan)}</span>
+                    <div class="font-display font-extrabold text-sm text-slate-900 truncate mt-1">${escapeHtml(j.nama_jurusan)}</div>
+                  </div>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <button onclick="window.editJurusan('${escapeHtml(j.id)}')" class="btn-anim p-2.5 rounded-full bg-amber-50 text-amber-600 hover:bg-amber-100" title="Edit">
+                      <i data-lucide="pencil" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="window.deleteJurusan('${escapeHtml(j.id)}')" class="btn-anim p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100" title="Hapus">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Kolom Kanan: Manajemen Fasilitas -->
+          <div class="space-y-4">
+            <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-md border border-slate-100">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display font-extrabold text-base text-slate-900">
+                  ${editFas ? 'Edit Fasilitas' : 'Tambah Fasilitas'}
+                </h3>
+                <span class="rounded-full bg-cyan-50 text-cyan-700 text-[10px] font-extrabold uppercase px-2.5 py-0.5">Lab &amp; Bengkel</span>
+              </div>
+
+              <form onsubmit="window.saveFasilitas(event)" class="space-y-3.5">
+                <input type="text" id="fas-nama" required placeholder="Nama Fasilitas (Bengkel Farmasi)" value="${editFas ? escapeHtml(editFas.nama_fasilitas) : ''}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+                <input type="url" id="fas-foto" required placeholder="URL Foto Fasilitas (https://...)" value="${editFas ? escapeHtml(editFas.foto_url) : ''}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+                <textarea id="fas-deskripsi" required rows="2" placeholder="Deskripsi singkat sarana praktik..." class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none">${editFas ? escapeHtml(editFas.deskripsi) : ''}</textarea>
+
+                <div class="flex gap-2">
+                  <button type="submit" class="btn-anim btn-glow-blue flex-1 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs py-3 px-5 shadow">
+                    ${editFas ? 'Simpan' : 'Tambahkan'}
+                  </button>
+                  ${editFas ? `<button type="button" onclick="window.cancelEditFasilitas()" class="btn-anim rounded-full bg-slate-200 text-slate-700 font-bold text-xs py-3 px-4">Batal</button>` : ''}
+                </div>
+              </form>
+            </div>
+
+            <div class="space-y-2.5">
+              ${appState.fasilitas.map(f => `
+                <div class="card-spring bg-white/95 rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-3 min-w-0">
+                    <img src="${escapeHtml(f.foto_url)}" alt="${escapeHtml(f.nama_fasilitas)}" onerror="this.src='https://placehold.co/100x100/0F2942/FFFFFF?text=Lab'" class="w-11 h-11 rounded-xl object-cover shrink-0" />
+                    <div class="font-display font-extrabold text-sm text-slate-900 truncate">${escapeHtml(f.nama_fasilitas)}</div>
+                  </div>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <button onclick="window.editFasilitas('${escapeHtml(f.id)}')" class="btn-anim p-2.5 rounded-full bg-amber-50 text-amber-600 hover:bg-amber-100" title="Edit">
+                      <i data-lucide="pencil" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="window.deleteFasilitas('${escapeHtml(f.id)}')" class="btn-anim p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100" title="Hapus">
+                      <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    window.saveJurusan = async function (e) {
+      e.preventDefault();
+      const payload = {
+        singkatan: document.getElementById('jur-singkatan').value.trim().toUpperCase(),
+        nama_jurusan: document.getElementById('jur-nama').value.trim(),
+        warna_tema: document.getElementById('jur-warna').value,
+        ikon: document.getElementById('jur-ikon').value.trim() || 'book-open',
+        deskripsi: document.getElementById('jur-deskripsi').value.trim()
+      };
+
+      if (IS_PREVIEW) {
+        if (appState.editingJurusanId) {
+          appState.jurusan = appState.jurusan.map(j => j.id === appState.editingJurusanId ? { ...j, ...payload } : j);
+          appState.editingJurusanId = null;
+          showToast('Jurusan diperbarui!', 'success');
+        } else {
+          appState.jurusan.push({ id: 'jur-' + Date.now(), ...payload });
+          showToast('Jurusan ditambahkan!', 'success');
+        }
+        renderAdminJurusanFasilitas();
+        return;
+      }
+
+      if (appState.editingJurusanId) {
+        const { data, error } = await supabase.from('jurusan').update(payload).eq('id', appState.editingJurusanId).select().single();
+        if (error) return showToast(error.message, 'error');
+        appState.jurusan = appState.jurusan.map(j => j.id === appState.editingJurusanId ? data : j);
+        appState.editingJurusanId = null;
+        showToast('Jurusan diperbarui!', 'success');
+      } else {
+        const { data, error } = await supabase.from('jurusan').insert([payload]).select().single();
+        if (error) return showToast(error.message, 'error');
+        appState.jurusan.push(data);
+        showToast('Jurusan tersimpan!', 'success');
+      }
+      renderAdminJurusanFasilitas();
+    };
+
+    window.editJurusan = function (id) {
+      appState.editingJurusanId = id;
+      renderAdminJurusanFasilitas();
+    };
+
+    window.cancelEditJurusan = function () {
+      appState.editingJurusanId = null;
+      renderAdminJurusanFasilitas();
+    };
+
+    window.deleteJurusan = async function (id) {
+      if (IS_PREVIEW) {
+        appState.jurusan = appState.jurusan.filter(j => j.id !== id);
+        showToast('Jurusan dihapus.', 'info');
+        renderAdminJurusanFasilitas();
+        return;
+      }
+      const { error } = await supabase.from('jurusan').delete().eq('id', id);
+      if (error) return showToast(error.message, 'error');
+      appState.jurusan = appState.jurusan.filter(j => j.id !== id);
+      showToast('Jurusan dihapus.', 'info');
+      renderAdminJurusanFasilitas();
+    };
+
+    window.saveFasilitas = async function (e) {
+      e.preventDefault();
+      const payload = {
+        nama_fasilitas: document.getElementById('fas-nama').value.trim(),
+        foto_url: document.getElementById('fas-foto').value.trim(),
+        deskripsi: document.getElementById('fas-deskripsi').value.trim()
+      };
+
+      if (IS_PREVIEW) {
+        if (appState.editingFasilitasId) {
+          appState.fasilitas = appState.fasilitas.map(f => f.id === appState.editingFasilitasId ? { ...f, ...payload } : f);
+          appState.editingFasilitasId = null;
+          showToast('Fasilitas diperbarui!', 'success');
+        } else {
+          appState.fasilitas.push({ id: 'fas-' + Date.now(), ...payload });
+          showToast('Fasilitas ditambahkan!', 'success');
+        }
+        renderAdminJurusanFasilitas();
+        return;
+      }
+
+      if (appState.editingFasilitasId) {
+        const { data, error } = await supabase.from('fasilitas').update(payload).eq('id', appState.editingFasilitasId).select().single();
+        if (error) return showToast(error.message, 'error');
+        appState.fasilitas = appState.fasilitas.map(f => f.id === appState.editingFasilitasId ? data : f);
+        appState.editingFasilitasId = null;
+        showToast('Fasilitas diperbarui!', 'success');
+      } else {
+        const { data, error } = await supabase.from('fasilitas').insert([payload]).select().single();
+        if (error) return showToast(error.message, 'error');
+        appState.fasilitas.push(data);
+        showToast('Fasilitas tersimpan!', 'success');
+      }
+      renderAdminJurusanFasilitas();
+    };
+
+    window.editFasilitas = function (id) {
+      appState.editingFasilitasId = id;
+      renderAdminJurusanFasilitas();
+    };
+
+    window.cancelEditFasilitas = function () {
+      appState.editingFasilitasId = null;
+      renderAdminJurusanFasilitas();
+    };
+
+    window.deleteFasilitas = async function (id) {
+      if (IS_PREVIEW) {
+        appState.fasilitas = appState.fasilitas.filter(f => f.id !== id);
+        showToast('Fasilitas dihapus.', 'info');
+        renderAdminJurusanFasilitas();
+        return;
+      }
+      const { error } = await supabase.from('fasilitas').delete().eq('id', id);
+      if (error) return showToast(error.message, 'error');
+      appState.fasilitas = appState.fasilitas.filter(f => f.id !== id);
+      showToast('Fasilitas dihapus.', 'info');
+      renderAdminJurusanFasilitas();
+    };
+
+    // ========================================================================
+    // 10B. ADMIN TAB GURU: UPLOAD FOTO KOMPRESI OTOMATIS (~30 KB) & LINK URL
+    // ========================================================================
+    function renderAdminGuru() {
+      const editGuru = appState.editingGuruId
+        ? appState.guru_sekolah.find(g => g.id === appState.editingGuruId)
+        : null;
+
+      const currentFoto = editGuru?.foto_url || '';
+
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Form Tambah / Edit Guru (Ringkas & Elegan) -->
+          <div class="lg:col-span-5">
+            <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-md border border-slate-100">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display font-extrabold text-base text-slate-900">
+                  ${editGuru ? 'Edit Guru' : 'Tambah Guru'}
+                </h3>
+                <span class="rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-extrabold uppercase px-2.5 py-0.5">Auto-Kompres</span>
+              </div>
+
+              <form onsubmit="window.saveGuru(event)" class="space-y-4">
+                <!-- Preview & Upload Foto Langsung + Link URL -->
+                <div class="rounded-2xl bg-slate-50/90 border border-slate-200/80 p-4">
+                  <div class="flex items-center gap-4">
+                    <div id="guru-foto-preview-box" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0F2942] to-[#0284C7] text-white flex items-center justify-center overflow-hidden shrink-0 shadow">
+                      ${currentFoto
+                        ? `<img src="${escapeHtml(currentFoto)}" class="w-full h-full object-cover object-top" />`
+                        : `<i data-lucide="camera" class="w-6 h-6 text-sky-200"></i>`
+                      }
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <label for="guru-foto-file" class="btn-anim btn-glow-blue cursor-pointer inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold text-xs px-4 py-2 shadow-sm">
+                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                        <span>Upload Foto</span>
+                      </label>
+                      <input type="file" id="guru-foto-file" accept="image/*" onchange="window.handleGuruFileUpload(event)" class="hidden" />
+                      <div id="guru-upload-status" class="text-[11px] text-slate-400 mt-1.5 truncate">JPG/PNG/WebP • Ringan otomatis</div>
+                    </div>
+                  </div>
+
+                  <div class="mt-3 pt-3 border-t border-slate-200/70">
+                    <input type="text" id="guru-foto" oninput="window.previewGuruUrl(this.value)" placeholder="Atau tempel link URL foto (https://...)" value="${escapeHtml(currentFoto)}" class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs focus:border-blue-600 outline-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Nama &amp; Gelar *</label>
+                  <input type="text" id="guru-nama" required placeholder="Firnanda Bastian, S.Pd., Gr." value="${editGuru ? escapeHtml(editGuru.nama_guru) : ''}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none" />
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Mata Pelajaran *</label>
+                  <input type="text" id="guru-jabatan" required placeholder="Teknologi Farmasi" value="${editGuru ? escapeHtml(editGuru.jabatan_mapel) : ''}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none" />
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                  <button type="submit" id="btn-save-guru" class="btn-anim btn-glow-blue flex-1 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs py-3 px-5 shadow">
+                    ${editGuru ? 'Simpan' : 'Tambahkan'}
+                  </button>
+                  ${editGuru ? `<button type="button" onclick="window.cancelEditGuru()" class="btn-anim rounded-full bg-slate-200 text-slate-700 font-bold text-xs py-3 px-4">Batal</button>` : ''}
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Daftar Guru Terdaftar -->
+          <div class="lg:col-span-7 space-y-3">
+            <div class="flex items-center justify-between bg-white/95 rounded-2xl px-5 py-3.5 shadow-sm border border-slate-100">
+              <div class="font-display font-extrabold text-sm text-slate-900">Daftar Guru</div>
+              <span class="rounded-full bg-indigo-50 text-indigo-700 font-extrabold text-xs px-3 py-1">${appState.guru_sekolah.length} Orang</span>
+            </div>
+
+            ${appState.guru_sekolah.length === 0
+              ? `<div class="bg-white rounded-3xl p-10 text-center text-xs text-slate-400 border border-dashed border-slate-200">Belum ada data guru.</div>`
+              : appState.guru_sekolah.map(g => {
+                  const hasFoto = g.foto_url && (g.foto_url.startsWith('http') || g.foto_url.startsWith('data:image/'));
+                  return `
+                    <div class="card-spring bg-white/95 rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-3.5">
+                      <div class="flex items-center gap-3.5 min-w-0">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0F2942] to-[#0284C7] text-white font-display font-extrabold text-sm flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
+                          ${hasFoto
+                            ? `<img src="${escapeHtml(g.foto_url)}" loading="lazy" class="w-full h-full object-cover object-top" onerror="this.remove()" />`
+                            : escapeHtml((g.nama_guru || 'G').charAt(0).toUpperCase())
+                          }
+                        </div>
+                        <div class="min-w-0">
+                          <div class="font-display font-extrabold text-sm text-slate-900 truncate">${escapeHtml(g.nama_guru)}</div>
+                          <span class="inline-block mt-1 rounded-full bg-sky-50 text-blue-700 font-bold text-[11px] px-2.5 py-0.5 truncate max-w-full">
+                            ${escapeHtml(g.jabatan_mapel)}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <button onclick="window.editGuru('${escapeHtml(g.id)}')" class="btn-anim p-2.5 rounded-full bg-amber-50 text-amber-600 hover:bg-amber-100" title="Edit">
+                          <i data-lucide="pencil" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="window.deleteGuru('${escapeHtml(g.id)}')" class="btn-anim p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100" title="Hapus">
+                          <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                      </div>
+                    </div>
+                  `;
+                }).join('')
+            }
+          </div>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    // Kompresi Foto Client-Side (Max 480px, Kualitas 0.80 -> ~25-45 KB agar web super cepat)
+    function compressGuruImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const MAX_SIZE = 480;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height && width > MAX_SIZE) {
+              height = Math.round((height * MAX_SIZE) / width);
+              width = MAX_SIZE;
+            } else if (height > MAX_SIZE) {
+              width = Math.round((width * MAX_SIZE) / height);
+              height = MAX_SIZE;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Coba format WebP terlebih dahulu, fallback ke JPEG
+            let dataUrl = canvas.toDataURL('image/webp', 0.80);
+            let mimeType = 'image/webp';
+            let ext = 'webp';
+
+            if (!dataUrl.startsWith('data:image/webp')) {
+              dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+              mimeType = 'image/jpeg';
+              ext = 'jpg';
+            }
+
+            canvas.toBlob(
+              (blob) => resolve({ dataUrl, blob, mimeType, ext }),
+              mimeType,
+              0.80
+            );
+          };
+          img.onerror = reject;
+          img.src = ev.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.previewGuruUrl = function (val) {
+      const box = document.getElementById('guru-foto-preview-box');
+      if (!box) return;
+      const clean = (val || '').trim();
+      if (clean.startsWith('http') || clean.startsWith('data:image/')) {
+        box.innerHTML = `<img src="${escapeHtml(clean)}" class="w-full h-full object-cover object-top" onerror="this.remove()" />`;
+      } else {
+        box.innerHTML = `<i data-lucide="camera" class="w-6 h-6 text-sky-200"></i>`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    };
+
+    window.handleGuruFileUpload = async function (e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      const statusEl = document.getElementById('guru-upload-status');
+      const urlInput = document.getElementById('guru-foto');
+      if (statusEl) statusEl.textContent = 'Mengompresi foto...';
+
+      try {
+        const compressed = await compressGuruImage(file);
+        const kbSize = compressed.blob ? Math.max(1, Math.round(compressed.blob.size / 1024)) : 30;
+
+        // Jika produksi (!IS_PREVIEW) & Supabase aktif, unggah ke Storage Bucket 'guru-avatars'
+        if (!IS_PREVIEW && supabase && compressed.blob) {
+          const fileName = `guru_${Date.now()}.${compressed.ext}`;
+          const { error: uploadErr } = await supabase.storage
+            .from('guru-avatars')
+            .upload(fileName, compressed.blob, { contentType: compressed.mimeType, upsert: true });
+
+          if (!uploadErr) {
+            const { data: pubData } = supabase.storage.from('guru-avatars').getPublicUrl(fileName);
+            if (pubData?.publicUrl) {
+              urlInput.value = pubData.publicUrl;
+              window.previewGuruUrl(pubData.publicUrl);
+              if (statusEl) statusEl.textContent = `Terunggah (${kbSize} KB)`;
+              showToast(`Foto terunggah (${kbSize} KB)`, 'success');
+              return;
+            }
+          }
+        }
+
+        // Fallback ringan: simpan Data URL hasil kompresi (~30 KB)
+        urlInput.value = compressed.dataUrl;
+        window.previewGuruUrl(compressed.dataUrl);
+        if (statusEl) statusEl.textContent = `Siap disimpan (${kbSize} KB)`;
+        showToast(`Foto dikompresi (${kbSize} KB)`, 'success');
+      } catch (err) {
+        if (statusEl) statusEl.textContent = 'Gagal memproses foto';
+        showToast('Gagal memproses file gambar.', 'error');
+      }
+    };
+
+    window.saveGuru = async function (e) {
+      e.preventDefault();
+      const payload = {
+        nama_guru: document.getElementById('guru-nama').value.trim(),
+        jabatan_mapel: document.getElementById('guru-jabatan').value.trim(),
+        foto_url: document.getElementById('guru-foto').value.trim()
+      };
+
+      if (IS_PREVIEW) {
+        if (appState.editingGuruId) {
+          appState.guru_sekolah = appState.guru_sekolah.map(g => g.id === appState.editingGuruId ? { ...g, ...payload } : g);
+          appState.editingGuruId = null;
+          showToast('Data guru diperbarui!', 'success');
+        } else {
+          appState.guru_sekolah.push({ id: 'guru-' + Date.now(), ...payload });
+          showToast('Guru ditambahkan!', 'success');
+        }
+        renderAdminGuru();
+        return;
+      }
+
+      if (appState.editingGuruId) {
+        const { data, error } = await supabase.from('guru_sekolah').update(payload).eq('id', appState.editingGuruId).select().single();
+        if (error) return showToast('Gagal update: ' + error.message, 'error');
+        appState.guru_sekolah = appState.guru_sekolah.map(g => g.id === appState.editingGuruId ? data : g);
+        appState.editingGuruId = null;
+        showToast('Data guru diperbarui!', 'success');
+      } else {
+        const { data, error } = await supabase.from('guru_sekolah').insert([payload]).select().single();
+        if (error) return showToast('Gagal menyimpan: ' + error.message, 'error');
+        appState.guru_sekolah.push(data);
+        showToast('Data guru tersimpan!', 'success');
+      }
+      renderAdminGuru();
+    };
+
+    window.editGuru = function (id) {
+      appState.editingGuruId = id;
+      renderAdminGuru();
+    };
+
+    window.cancelEditGuru = function () {
+      appState.editingGuruId = null;
+      renderAdminGuru();
+    };
+
+    window.deleteGuru = async function (id) {
+      if (IS_PREVIEW) {
+        appState.guru_sekolah = appState.guru_sekolah.filter(g => g.id !== id);
+        showToast('Data guru dihapus.', 'info');
+        renderAdminGuru();
+        return;
+      }
+      const { error } = await supabase.from('guru_sekolah').delete().eq('id', id);
+      if (error) return showToast(error.message, 'error');
+      appState.guru_sekolah = appState.guru_sekolah.filter(g => g.id !== id);
+      showToast('Data guru dihapus.', 'info');
+      renderAdminGuru();
+    };
+
+    // ========================================================================
+    // 10C. ADMIN TAB POSTINGAN KEGIATAN SMKN 8 WAJO (CRUD + UPLOAD FOTO)
+    // ========================================================================
+    function renderAdminPostingan() {
+      const editPost = appState.editingPostinganId
+        ? appState.postingan_kegiatan.find(p => p.id === appState.editingPostinganId)
+        : null;
+      const currentFoto = editPost?.foto_url || '';
+
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-5">
+            <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-md border border-slate-100">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display font-extrabold text-base text-slate-900">
+                  ${editPost ? 'Edit Postingan' : 'Buat Postingan'}
+                </h3>
+                <span class="rounded-full bg-blue-50 text-blue-700 text-[10px] font-extrabold uppercase px-2.5 py-0.5">Kegiatan</span>
+              </div>
+
+              <form onsubmit="window.savePostingan(event)" class="space-y-3.5">
+                <div class="rounded-2xl bg-slate-50/90 border border-slate-200/80 p-3.5">
+                  <div class="flex items-center gap-3.5">
+                    <div id="post-foto-preview-box" class="w-16 h-14 rounded-xl bg-gradient-to-br from-[#0F2942] to-[#0284C7] text-white flex items-center justify-center overflow-hidden shrink-0 shadow">
+                      ${currentFoto
+                        ? `<img src="${escapeHtml(currentFoto)}" class="w-full h-full object-cover" />`
+                        : `<i data-lucide="image" class="w-6 h-6 text-sky-200"></i>`
+                      }
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <label for="post-foto-file" class="btn-anim btn-glow-blue cursor-pointer inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold text-xs px-4 py-2 shadow-sm">
+                        <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                        <span>Upload Foto</span>
+                      </label>
+                      <input type="file" id="post-foto-file" accept="image/*" onchange="window.handlePostinganFileUpload(event)" class="hidden" />
+                      <div id="post-upload-status" class="text-[11px] text-slate-400 mt-1 truncate">Auto-kompres ringan</div>
+                    </div>
+                  </div>
+                  <div class="mt-2.5 pt-2.5 border-t border-slate-200/70">
+                    <input type="text" id="post-foto" oninput="window.previewPostinganUrl(this.value)" placeholder="Atau tempel URL foto kegiatan (https://...)" value="${escapeHtml(currentFoto)}" class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs focus:border-blue-600 outline-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Judul Kegiatan *</label>
+                  <input type="text" id="post-judul" required placeholder="Contoh: Uji Kompetensi Keahlian Farmasi" value="${editPost ? escapeHtml(editPost.judul) : ''}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm font-semibold focus:bg-white focus:border-blue-600 outline-none" />
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Kategori</label>
+                    <input type="text" id="post-kategori" required placeholder="Praktik / Agenda" value="${editPost ? escapeHtml(editPost.kategori) : 'Kegiatan Sekolah'}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Tanggal</label>
+                    <input type="text" id="post-tanggal" required placeholder="19 November 2026" value="${editPost ? escapeHtml(editPost.tanggal) : '19 November 2026'}" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Isi / Ringkasan Kegiatan *</label>
+                  <textarea id="post-ringkasan" required rows="3" placeholder="Tulis deskripsi kegiatan sekolah..." class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none">${editPost ? escapeHtml(editPost.ringkasan) : ''}</textarea>
+                </div>
+
+                <div class="flex gap-2 pt-1">
+                  <button type="submit" class="btn-anim btn-glow-blue flex-1 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs py-3 px-5 shadow">
+                    ${editPost ? 'Simpan Perubahan' : 'Terbitkan Postingan'}
+                  </button>
+                  ${editPost ? `<button type="button" onclick="window.cancelEditPostingan()" class="btn-anim rounded-full bg-slate-200 text-slate-700 font-bold text-xs py-3 px-4">Batal</button>` : ''}
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 space-y-3">
+            <div class="flex items-center justify-between bg-white/95 rounded-2xl px-5 py-3.5 shadow-sm border border-slate-100">
+              <div class="font-display font-extrabold text-sm text-slate-900">Daftar Postingan</div>
+              <span class="rounded-full bg-blue-50 text-blue-700 font-extrabold text-xs px-3 py-1">${appState.postingan_kegiatan.length} Postingan</span>
+            </div>
+
+            ${appState.postingan_kegiatan.length === 0
+              ? `<div class="bg-white rounded-3xl p-10 text-center text-xs text-slate-400 border border-dashed border-slate-200">Belum ada postingan kegiatan.</div>`
+              : appState.postingan_kegiatan.map(p => {
+                  const hasFoto = p.foto_url && (p.foto_url.startsWith('http') || p.foto_url.startsWith('data:image/'));
+                  return `
+                    <div class="card-spring bg-white/95 rounded-2xl p-4 shadow-sm border border-slate-100 flex items-center justify-between gap-3.5">
+                      <div class="flex items-center gap-3.5 min-w-0">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#0F2942] to-[#0284C7] text-white flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
+                          ${hasFoto
+                            ? `<img src="${escapeHtml(p.foto_url)}" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()" />`
+                            : `<i data-lucide="newspaper" class="w-5 h-5"></i>`
+                          }
+                        </div>
+                        <div class="min-w-0">
+                          <div class="flex items-center gap-2">
+                            <span class="rounded-full bg-blue-50 text-blue-700 font-extrabold text-[10px] px-2 py-0.5">${escapeHtml(p.kategori || 'Kegiatan')}</span>
+                            <span class="text-[11px] text-slate-400">${escapeHtml(p.tanggal || '')}</span>
+                          </div>
+                          <div class="font-display font-extrabold text-sm text-slate-900 truncate mt-1">${escapeHtml(p.judul)}</div>
+                          <div class="text-xs text-slate-500 truncate mt-0.5">${escapeHtml(p.ringkasan)}</div>
+                        </div>
+                      </div>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <button onclick="window.editPostingan('${escapeHtml(p.id)}')" class="btn-anim p-2.5 rounded-full bg-amber-50 text-amber-600 hover:bg-amber-100" title="Edit">
+                          <i data-lucide="pencil" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="window.deletePostingan('${escapeHtml(p.id)}')" class="btn-anim p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100" title="Hapus">
+                          <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                      </div>
+                    </div>
+                  `;
+                }).join('')
+            }
+          </div>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    window.previewPostinganUrl = function (val) {
+      const box = document.getElementById('post-foto-preview-box');
+      if (!box) return;
+      const clean = (val || '').trim();
+      if (clean.startsWith('http') || clean.startsWith('data:image/')) {
+        box.innerHTML = `<img src="${escapeHtml(clean)}" class="w-full h-full object-cover" onerror="this.remove()" />`;
+      } else {
+        box.innerHTML = `<i data-lucide="image" class="w-6 h-6 text-sky-200"></i>`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+    };
+
+    window.handlePostinganFileUpload = async function (e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const statusEl = document.getElementById('post-upload-status');
+      const urlInput = document.getElementById('post-foto');
+      if (statusEl) statusEl.textContent = 'Mengompresi foto...';
+
+      try {
+        const compressed = await compressGuruImage(file);
+        const kbSize = compressed.blob ? Math.max(1, Math.round(compressed.blob.size / 1024)) : 35;
+
+        if (!IS_PREVIEW && supabase && compressed.blob) {
+          const fileName = `post_${Date.now()}.${compressed.ext}`;
+          const { error: uploadErr } = await supabase.storage
+            .from('guru-avatars')
+            .upload(fileName, compressed.blob, { contentType: compressed.mimeType, upsert: true });
+
+          if (!uploadErr) {
+            const { data: pubData } = supabase.storage.from('guru-avatars').getPublicUrl(fileName);
+            if (pubData?.publicUrl) {
+              urlInput.value = pubData.publicUrl;
+              window.previewPostinganUrl(pubData.publicUrl);
+              if (statusEl) statusEl.textContent = `Terunggah (${kbSize} KB)`;
+              showToast(`Foto kegiatan terunggah (${kbSize} KB)`, 'success');
+              return;
+            }
+          }
+        }
+
+        urlInput.value = compressed.dataUrl;
+        window.previewPostinganUrl(compressed.dataUrl);
+        if (statusEl) statusEl.textContent = `Siap disimpan (${kbSize} KB)`;
+        showToast(`Foto dikompresi (${kbSize} KB)`, 'success');
+      } catch (err) {
+        if (statusEl) statusEl.textContent = 'Gagal memproses foto';
+        showToast('Gagal memproses foto kegiatan.', 'error');
+      }
+    };
+
+    window.savePostingan = async function (e) {
+      e.preventDefault();
+      const payload = {
+        judul: document.getElementById('post-judul').value.trim(),
+        kategori: document.getElementById('post-kategori').value.trim() || 'Kegiatan Sekolah',
+        tanggal: document.getElementById('post-tanggal').value.trim(),
+        ringkasan: document.getElementById('post-ringkasan').value.trim(),
+        foto_url: document.getElementById('post-foto').value.trim()
+      };
+
+      if (IS_PREVIEW) {
+        if (appState.editingPostinganId) {
+          appState.postingan_kegiatan = appState.postingan_kegiatan.map(p => p.id === appState.editingPostinganId ? { ...p, ...payload } : p);
+          appState.editingPostinganId = null;
+          showToast('Postingan diperbarui!', 'success');
+        } else {
+          appState.postingan_kegiatan.unshift({ id: 'post-' + Date.now(), ...payload });
+          showToast('Postingan diterbitkan!', 'success');
+        }
+        renderAdminPostingan();
+        return;
+      }
+
+      if (appState.editingPostinganId) {
+        const { data, error } = await supabase.from('postingan_kegiatan').update(payload).eq('id', appState.editingPostinganId).select().single();
+        if (error) return showToast('Gagal update: ' + error.message, 'error');
+        appState.postingan_kegiatan = appState.postingan_kegiatan.map(p => p.id === appState.editingPostinganId ? data : p);
+        appState.editingPostinganId = null;
+        showToast('Postingan diperbarui!', 'success');
+      } else {
+        const { data, error } = await supabase.from('postingan_kegiatan').insert([payload]).select().single();
+        if (error) return showToast('Gagal menerbitkan: ' + error.message, 'error');
+        appState.postingan_kegiatan.unshift(data);
+        showToast('Postingan diterbitkan ke Supabase!', 'success');
+      }
+      renderAdminPostingan();
+    };
+
+    window.editPostingan = function (id) {
+      appState.editingPostinganId = id;
+      renderAdminPostingan();
+    };
+
+    window.cancelEditPostingan = function () {
+      appState.editingPostinganId = null;
+      renderAdminPostingan();
+    };
+
+    window.deletePostingan = async function (id) {
+      if (IS_PREVIEW) {
+        appState.postingan_kegiatan = appState.postingan_kegiatan.filter(p => p.id !== id);
+        showToast('Postingan dihapus.', 'info');
+        renderAdminPostingan();
+        return;
+      }
+      const { error } = await supabase.from('postingan_kegiatan').delete().eq('id', id);
+      if (error) return showToast(error.message, 'error');
+      appState.postingan_kegiatan = appState.postingan_kegiatan.filter(p => p.id !== id);
+      showToast('Postingan dihapus.', 'info');
+      renderAdminPostingan();
+    };
+
+    // ========================================================================
+    // 11. ADMIN TAB C: DATA PENDAFTAR SPMB & AKUN SISWA (RINGKAS)
+    // ========================================================================
+    function renderAdminSpmb() {
+      const jurusanOptions = appState.jurusan.length > 0
+        ? appState.jurusan.map(j => `<option value="${escapeHtml(j.nama_jurusan)}">${escapeHtml(j.singkatan)} — ${escapeHtml(j.nama_jurusan)}</option>`).join('')
+        : `<option value="Teknologi Farmasi">Teknologi Farmasi</option><option value="Agribisnis Perikanan">Agribisnis Perikanan</option>`;
+
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-md border border-slate-100 mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-display font-extrabold text-base text-slate-900">Tambah Pendaftar SPMB</h3>
+            <span class="rounded-full bg-amber-50 text-amber-800 text-[10px] font-extrabold uppercase px-2.5 py-0.5">Input Manual</span>
+          </div>
+          <form onsubmit="window.adminAddPendaftar(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <input type="text" id="adm-spmb-nisn" required placeholder="NISN *" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            <input type="text" id="adm-spmb-pass" required placeholder="Kata Sandi *" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            <input type="text" id="adm-spmb-nama" required placeholder="Nama Lengkap *" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            <input type="text" id="adm-spmb-asal" required placeholder="Asal SMP/MTs *" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            <input type="text" id="adm-spmb-hp" required placeholder="No. WhatsApp *" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            <select id="adm-spmb-jurusan" class="rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-xs sm:text-sm focus:bg-white focus:border-blue-600 outline-none">
+              ${jurusanOptions}
+            </select>
+            <div class="sm:col-span-2 lg:col-span-3 flex justify-end">
+              <button type="submit" class="btn-anim btn-glow-blue rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs px-6 py-3 shadow">
+                Simpan Pendaftar
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl shadow-md border border-slate-100 overflow-hidden">
+          <div class="p-5 sm:p-6 border-b border-slate-100 flex items-center justify-between">
+            <h3 class="font-display font-extrabold text-base text-slate-900">Data Pendaftar SPMB</h3>
+            <span class="rounded-full bg-blue-50 text-blue-700 font-extrabold text-xs px-3.5 py-1">
+              ${appState.pendaftar_spmb.length} Siswa
+            </span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 text-[11px] font-extrabold text-slate-500 uppercase border-b border-slate-200">
+                  <th class="py-3.5 px-4">NISN</th>
+                  <th class="py-3.5 px-4">Calon Siswa</th>
+                  <th class="py-3.5 px-4">Jurusan</th>
+                  <th class="py-3.5 px-4">Status</th>
+                  <th class="py-3.5 px-4 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-xs sm:text-sm">
+                ${appState.pendaftar_spmb.length === 0
+                  ? `<tr><td colspan="5" class="py-10 text-center text-slate-400">Belum ada data pendaftar.</td></tr>`
+                  : appState.pendaftar_spmb.map(p => `
+                      <tr class="hover:bg-slate-50/70">
+                        <td class="py-3.5 px-4">
+                          <div class="font-bold text-slate-900">${escapeHtml(p.nisn)}</div>
+                          <div class="text-[11px] text-slate-400">Sandi: ${escapeHtml(p.password)}</div>
+                        </td>
+                        <td class="py-3.5 px-4">
+                          <div class="font-bold text-slate-800">${escapeHtml(p.nama_lengkap)}</div>
+                          <div class="text-xs text-slate-500">${escapeHtml(p.asal_sekolah)} • ${escapeHtml(p.no_hp)}</div>
+                        </td>
+                        <td class="py-3.5 px-4 text-xs font-semibold text-slate-700">
+                          ${escapeHtml(p.pilihan_jurusan)}
+                        </td>
+                        <td class="py-3.5 px-4">
+                          <select onchange="window.updateStatusSpmb('${escapeHtml(p.id)}', this.value)"
+                                  class="rounded-full border border-slate-300 px-3 py-1.5 text-xs font-bold bg-white">
+                            <option value="Menunggu Verifikasi" ${p.status_seleksi === 'Menunggu Verifikasi' ? 'selected' : ''}>Menunggu Verifikasi</option>
+                            <option value="Diterima" ${p.status_seleksi === 'Diterima' ? 'selected' : ''}>Diterima</option>
+                            <option value="Cadangan" ${p.status_seleksi === 'Cadangan' ? 'selected' : ''}>Cadangan</option>
+                          </select>
+                        </td>
+                        <td class="py-3.5 px-4 text-right">
+                          <button onclick="window.deletePendaftar('${escapeHtml(p.id)}')" class="btn-anim p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100" title="Hapus">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    `).join('')
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    window.adminAddPendaftar = async function (e) {
+      e.preventDefault();
+      const payload = {
+        nisn: document.getElementById('adm-spmb-nisn').value.trim(),
+        password: document.getElementById('adm-spmb-pass').value.trim(),
+        nama_lengkap: document.getElementById('adm-spmb-nama').value.trim(),
+        asal_sekolah: document.getElementById('adm-spmb-asal').value.trim(),
+        no_hp: document.getElementById('adm-spmb-hp').value.trim(),
+        pilihan_jurusan: document.getElementById('adm-spmb-jurusan').value,
+        status_seleksi: 'Menunggu Verifikasi'
+      };
+
+      if (IS_PREVIEW) {
+        appState.pendaftar_spmb.unshift({ id: 'spmb-' + Date.now(), ...payload, created_at: new Date().toISOString() });
+        showToast('Data pendaftar berhasil ditambahkan!', 'success');
+        renderAdminSpmb();
+        return;
+      }
+
+      const { data, error } = await supabase.from('pendaftar_spmb').insert([payload]).select().single();
+      if (error) return showToast('Gagal menambah pendaftar: ' + error.message, 'error');
+      appState.pendaftar_spmb.unshift(data);
+      showToast('Pendaftar tersimpan ke Supabase!', 'success');
+      renderAdminSpmb();
+    };
+
+    window.updateStatusSpmb = async function (id, newStatus) {
+      if (IS_PREVIEW) {
+        appState.pendaftar_spmb = appState.pendaftar_spmb.map(p => p.id === id ? { ...p, status_seleksi: newStatus } : p);
+        showToast(`Status diubah menjadi "${newStatus}"`, 'success');
+        return;
+      }
+
+      const { error } = await supabase.from('pendaftar_spmb').update({ status_seleksi: newStatus }).eq('id', id);
+      if (error) return showToast('Gagal update status: ' + error.message, 'error');
+      appState.pendaftar_spmb = appState.pendaftar_spmb.map(p => p.id === id ? { ...p, status_seleksi: newStatus } : p);
+      showToast(`Status seleksi diperbarui ke "${newStatus}"`, 'success');
+    };
+
+    window.deletePendaftar = async function (id) {
+      if (IS_PREVIEW) {
+        appState.pendaftar_spmb = appState.pendaftar_spmb.filter(p => p.id !== id);
+        showToast('Data pendaftar dihapus.', 'info');
+        renderAdminSpmb();
+        return;
+      }
+      const { error } = await supabase.from('pendaftar_spmb').delete().eq('id', id);
+      if (error) return showToast(error.message, 'error');
+      appState.pendaftar_spmb = appState.pendaftar_spmb.filter(p => p.id !== id);
+      showToast('Data pendaftar dihapus dari Supabase.', 'info');
+      renderAdminSpmb();
+    };
+
+    // ========================================================================
+    // 12. ADMIN TAB D: MANAJEMEN JEJAK ALUMNI & GALERI (RINGKAS & ELEGAN)
+    // ========================================================================
+    function renderAdminGaleriTestimoni() {
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-md border border-slate-100 mb-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-display font-extrabold text-base text-slate-900">Tambah Jejak Alumni &amp; Galeri</h3>
+            <span class="rounded-full bg-violet-50 text-violet-700 text-[10px] font-extrabold uppercase px-2.5 py-0.5">Publikasi</span>
+          </div>
+          <form onsubmit="window.saveTestimoniGaleri(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Kategori</label>
+              <select id="tg-tipe" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm focus:bg-white focus:border-blue-600 outline-none">
+                <option value="testimoni">Jejak Alumni (Nama &amp; Kuliah/Kerja)</option>
+                <option value="galeri">Galeri Instagram / Foto</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Nama Alumni / Judul Galeri *</label>
+              <input type="text" id="tg-judul" required placeholder="Contoh: Besek Rahmawati" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Tempat Kuliah / Kerja *</label>
+              <input type="text" id="tg-peran" required placeholder="Contoh: Mahasiswa Unhas / Apotek Kimia Farma" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Link Foto Alumni / URL Instagram</label>
+              <input type="text" id="tg-isi" placeholder="https://... (Kosongkan untuk avatar inisial)" class="w-full rounded-xl border border-slate-200 bg-slate-50/60 px-3.5 py-2.5 text-sm focus:bg-white focus:border-blue-600 outline-none" />
+            </div>
+            <div class="sm:col-span-2 flex justify-end">
+              <button type="submit" class="btn-anim btn-glow-blue rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs px-6 py-3 shadow">
+                Publikasikan
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${appState.testimoni_galeri.length === 0
+            ? `<div class="col-span-full bg-white rounded-2xl p-8 text-center text-xs text-slate-400 border border-dashed border-slate-200">Belum ada konten.</div>`
+            : appState.testimoni_galeri.map(item => `
+                <div class="card-spring bg-white/95 rounded-2xl p-4 shadow-sm border border-slate-100 flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <span class="inline-block text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full ${item.tipe === 'testimoni' ? 'bg-violet-50 text-violet-700' : 'bg-pink-50 text-pink-700'} mb-1">
+                      ${item.tipe === 'testimoni' ? 'Jejak Alumni' : 'Galeri'}
+                    </span>
+                    <div class="font-display font-bold text-sm text-slate-900 truncate">${escapeHtml(item.judul_atau_nama)}</div>
+                    <div class="text-xs text-slate-500 truncate">${escapeHtml(item.peran_atau_keterangan)}</div>
+                  </div>
+                  <button onclick="window.deleteTestimoniGaleri('${escapeHtml(item.id)}')" class="btn-anim p-2.5 rounded-full bg-rose-50 text-rose-600 hover:bg-rose-100 shrink-0">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                </div>
+              `).join('')
+          }
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    window.saveTestimoniGaleri = async function (e) {
+      e.preventDefault();
+      const payload = {
+        tipe: document.getElementById('tg-tipe').value,
+        judul_atau_nama: document.getElementById('tg-judul').value.trim(),
+        peran_atau_keterangan: document.getElementById('tg-peran').value.trim(),
+        rating: 5,
+        isi_atau_foto_url: document.getElementById('tg-isi').value.trim()
+      };
+
+      if (IS_PREVIEW) {
+        appState.testimoni_galeri.unshift({ id: 'tg-' + Date.now(), ...payload });
+        showToast('Konten berhasil dipublikasikan!', 'success');
+        renderAdminGaleriTestimoni();
+        return;
+      }
+
+      const { data, error } = await supabase.from('testimoni_galeri').insert([payload]).select().single();
+      if (error) return showToast(error.message, 'error');
+      appState.testimoni_galeri.unshift(data);
+      showToast('Konten tersimpan ke Supabase!', 'success');
+      renderAdminGaleriTestimoni();
+    };
+
+    window.deleteTestimoniGaleri = async function (id) {
+      if (IS_PREVIEW) {
+        appState.testimoni_galeri = appState.testimoni_galeri.filter(x => x.id !== id);
+        showToast('Item dihapus.', 'info');
+        renderAdminGaleriTestimoni();
+        return;
+      }
+      const { error } = await supabase.from('testimoni_galeri').delete().eq('id', id);
+      if (error) return showToast(error.message, 'error');
+      appState.testimoni_galeri = appState.testimoni_galeri.filter(x => x.id !== id);
+      showToast('Item dihapus dari Supabase.', 'info');
+      renderAdminGaleriTestimoni();
+    };
+
+    // ========================================================================
+    // 13. SISWA TAB A & B: KARTU BUKTI SPMB & PENGUMUMAN (RINGKAS & ELEGAN)
+    // ========================================================================
+    function renderSiswaKartu() {
+      const s = appState.currentUser.data;
+      const statusBadge =
+        s.status_seleksi === 'Diterima'
+          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+          : s.status_seleksi === 'Cadangan'
+          ? 'bg-amber-100 text-amber-800 border-amber-300'
+          : 'bg-blue-100 text-blue-800 border-blue-300';
+
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="max-w-xl mx-auto">
+          <div id="printable-card" class="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200">
+            <!-- Card Header -->
+            <div class="bg-gradient-to-r from-navy-900 via-navy-800 to-blue-900 p-6 text-white flex items-center justify-between">
+              <div class="flex items-center gap-3.5">
+                <div class="w-11 h-11 rounded-2xl bg-amber-400 text-navy-900 font-display font-extrabold flex items-center justify-center text-lg shadow">
+                  8W
+                </div>
+                <div>
+                  <div class="font-display font-extrabold text-base sm:text-lg tracking-tight">KARTU PESERTA SPMB</div>
+                  <div class="text-xs text-sky-300">UPT SMKN 8 WAJO • 2026/2027</div>
+                </div>
+              </div>
+              <span class="inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1 text-[11px] font-extrabold uppercase ${statusBadge}">
+                ${escapeHtml(s.status_seleksi)}
+              </span>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-6 space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <div class="text-[11px] text-slate-400 font-bold uppercase">NISN</div>
+                  <div class="font-display font-extrabold text-lg text-slate-900 mt-0.5">${escapeHtml(s.nisn)}</div>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-400 font-bold uppercase">Nama Lengkap</div>
+                  <div class="font-bold text-slate-900 mt-0.5">${escapeHtml(s.nama_lengkap)}</div>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-400 font-bold uppercase">Pilihan Jurusan</div>
+                  <div class="font-bold text-blue-700 mt-0.5">${escapeHtml(s.pilihan_jurusan)}</div>
+                </div>
+                <div>
+                  <div class="text-[11px] text-slate-400 font-bold uppercase">Asal Sekolah</div>
+                  <div class="font-bold text-slate-900 mt-0.5">${escapeHtml(s.asal_sekolah)}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 flex justify-center">
+            <button onclick="window.print()" class="btn-anim btn-glow-blue group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#0F2942] via-[#1D4ED8] to-[#0284C7] text-white font-extrabold text-xs sm:text-sm px-7 py-3 shadow-lg">
+              <i data-lucide="printer" class="w-4 h-4 text-amber-300"></i>
+              <span>Cetak Kartu</span>
+            </button>
+          </div>
+        </div>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+    }
+
+    function renderSiswaInfo() {
+      document.getElementById('dashboard-content').innerHTML = `
+        <div class="space-y-5">
+          <div class="bg-gradient-to-r from-navy-800 to-blue-800 rounded-3xl p-6 text-white shadow-lg">
+            <span class="inline-block rounded-full bg-amber-400 text-navy-900 text-[10px] font-extrabold uppercase px-3 py-0.5 mb-2">Info Daftar Ulang</span>
+            <h2 class="font-display font-extrabold text-lg sm:text-xl">Berkas Verifikasi Sekretariat</h2>
+            <p class="text-xs text-slate-200 mt-1.5 leading-relaxed">
+              Bawa fotokopi Ijazah/SKL, Kartu Keluarga, Akta Kelahiran, dan Kartu Peserta SPMB pada jam kerja (08.00 – 14.00 WITA).
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            ${appState.jurusan.map(j => `
+              <div class="bg-white/95 rounded-2xl p-5 shadow-sm border border-slate-100">
+                <span class="inline-block text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 mb-1.5">${escapeHtml(j.singkatan)}</span>
+                <h4 class="font-display font-extrabold text-base text-slate-900">${escapeHtml(j.nama_jurusan)}</h4>
+                <p class="text-xs text-slate-500 mt-1">${escapeHtml(j.deskripsi)}</p>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ========================================================================
+    // 14. INISIALISASI SAAT HALAMAN DIMUAT
+    // ========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      // Tampilkan / Sembunyikan elemen khusus IS_PREVIEW
+      const previewBadge = document.getElementById('preview-badge');
+      const quickLoginBox = document.getElementById('preview-quick-login');
+
+      if (IS_PREVIEW) {
+        previewBadge.classList.remove('hidden');
+        previewBadge.classList.add('inline-flex');
+        quickLoginBox.classList.remove('hidden');
+      } else {
+        previewBadge.remove();
+        quickLoginBox.remove();
+      }
+
+      loadAllData();
+    });
+  </script>
+</body>
+</html>
